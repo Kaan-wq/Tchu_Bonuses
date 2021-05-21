@@ -17,6 +17,10 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import ch.epfl.tchu.gui.ActionHandlers.*;
 
+import javax.sound.sampled.*;
+import java.io.File;
+import java.io.IOException;
+
 /**
  * @author Kaan Ucar (324467)
  * @author Félix Rodriguez Moya (325162)
@@ -72,7 +76,10 @@ class DecksViewCreator {
 
         Button buttonCards = makeButton(observableState.getRemainingCards(), "Cards");
         buttonCards.disableProperty().bind(cardHandler.isNull());
-        buttonCards.setOnMouseClicked(e -> cardHandler.get().onDrawCard(-1));
+        buttonCards.setOnMouseClicked(e -> {
+            cardHandler.get().onDrawCard(-1);
+            soundMaker("sounds/CardFaceUpDraw.wav");
+        });
 
         vBox.getChildren().add(buttonTickets);
 
@@ -131,7 +138,10 @@ class DecksViewCreator {
 
         //Mouse click
         stackPane.disableProperty().bind(cardHandler.isNull());
-        stackPane.setOnMouseClicked(e -> cardHandler.get().onDrawCard(slot));
+        stackPane.setOnMouseClicked(e ->{
+            cardHandler.get().onDrawCard(slot);
+            soundMaker("sounds/CardFaceUpDraw.wav");
+        });
 
         vBox.getChildren().add(stackPane);
     }
@@ -169,5 +179,26 @@ class DecksViewCreator {
         wagLoc.getStyleClass().add("train-image");
 
         return new StackPane(outside, inside, wagLoc);
+    }
+
+    /**
+     * Méthode qui passe le son désiré
+     *
+     * @param string (String) : le son désiré
+     */
+    private static void soundMaker(String string){
+        try{
+            File file = new File(string);
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (UnsupportedAudioFileException ua) {
+            ua.printStackTrace();
+        } catch (LineUnavailableException lu) {
+            lu.printStackTrace();
+        } catch (IOException io) {
+            io.printStackTrace();
+        }
     }
 }
