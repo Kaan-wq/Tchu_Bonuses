@@ -25,9 +25,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.StringConverter;
 
-import javax.sound.sampled.*;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -212,7 +209,7 @@ public final class GraphicalPlayer {
         button.setOnAction(event -> {
             popUp.hide();
             ticketsHandler.onChooseTickets(SortedBag.of(listView.getSelectionModel().getSelectedItems()));
-            soundMaker("sounds/TicketDraw.wav");
+            SoundMaker.makeSound("sounds/TicketDraw.wav").start();
         });
 
         VBox box = new VBox(textFlow, listView, button);
@@ -283,22 +280,12 @@ public final class GraphicalPlayer {
         }
     }
 
-
+    /**
+     * Methode utilisée pour mettre à "null" les propriétés suivantes
+     */
     private void setAllNull(){
         cardsHandlerProperty.set(null);
         ticketsHandlerProperty.set(null);
         routesHandlerProperty.set(null);
-    }
-
-    private void soundMaker(String string){
-        try{
-            File file = new File(string);
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-            clip.start();
-        } catch (UnsupportedAudioFileException | LineUnavailableException | IOException ua) {
-            ua.printStackTrace();
-        }
     }
 }

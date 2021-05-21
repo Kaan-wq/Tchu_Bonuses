@@ -9,6 +9,10 @@ import ch.epfl.tchu.Preconditions;
 import ch.epfl.tchu.SortedBag;
 import ch.epfl.tchu.game.Route.Level;
 import ch.epfl.tchu.gui.Info;
+import ch.epfl.tchu.gui.SoundMaker;
+
+import javax.sound.sampled.Clip;
+
 
 /**
  * @author Kaan Ucar (324467)
@@ -22,9 +26,9 @@ public final class Game {
     /**
      *
      * @param players (Map<PlayerId, Player>) : la map associant les PlayerId au Player
-     * @param playerNames (
-     * @param tickets
-     * @param rng
+     * @param playerNames (Map<PlayerId, String>) : la map associant les PlayerId aux noms des joueurs
+     * @param tickets (SortedBag<Ticket>)
+     * @param rng (Random)
      */
     public static void play(Map<PlayerId, Player> players, Map<PlayerId,
             String> playerNames, SortedBag<Ticket> tickets, Random rng) {
@@ -63,6 +67,10 @@ public final class Game {
         //boucle d'itération pour les tours des joueurs
 
         boolean endGame = true;
+
+        Clip clip = SoundMaker.makeSound("sounds/MUSIQUE KAAN.wav");
+        clip.start();
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
 
         while(endGame){
             updateGraphics(players, jeu);

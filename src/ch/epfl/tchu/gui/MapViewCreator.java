@@ -12,12 +12,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import ch.epfl.tchu.gui.ActionHandlers.*;
-
-import javax.sound.sampled.*;
 
 /**
  * @author Kaan Ucar (324467)
@@ -79,7 +75,7 @@ class MapViewCreator {
         jeu.getLordRoute(route).addListener((p, o, n) ->{
             if(n != null){
                 groupRoute.getStyleClass().add(n.name());
-                soundMaker("sounds/HornOne.wav");
+                SoundMaker.makeSound("sounds/HornOne.wav").start();
             }
         });
 
@@ -126,7 +122,6 @@ class MapViewCreator {
         return voie;
     }
 
-
     /**
      * @return wagon avec cercles et styles complets
      */
@@ -142,17 +137,5 @@ class MapViewCreator {
         wagon.getStyleClass().add("car");
 
         return wagon;
-    }
-
-    private static void soundMaker(String string){
-        try{
-            File file = new File(string);
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-            clip.start();
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            e.printStackTrace();
-        }
     }
 }
