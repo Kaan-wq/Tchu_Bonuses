@@ -79,20 +79,7 @@ class MapViewCreator {
         jeu.getLordRoute(route).addListener((p, o, n) ->{
             if(n != null){
                 groupRoute.getStyleClass().add(n.name());
-
-                try{
-                    File file = new File("sounds/HornOne.wav");
-                    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
-                    Clip clip = AudioSystem.getClip();
-                    clip.open(audioInputStream);
-                    clip.start();
-                } catch (UnsupportedAudioFileException e) {
-                    e.printStackTrace();
-                } catch (LineUnavailableException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                soundMaker("sounds/HornOne.wav");
             }
         });
 
@@ -155,5 +142,17 @@ class MapViewCreator {
         wagon.getStyleClass().add("car");
 
         return wagon;
+    }
+
+    private static void soundMaker(String string){
+        try{
+            File file = new File(string);
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -193,12 +193,8 @@ class DecksViewCreator {
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
-        } catch (UnsupportedAudioFileException ua) {
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ua) {
             ua.printStackTrace();
-        } catch (LineUnavailableException lu) {
-            lu.printStackTrace();
-        } catch (IOException io) {
-            io.printStackTrace();
         }
     }
 }
