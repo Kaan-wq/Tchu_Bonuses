@@ -12,8 +12,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import ch.epfl.tchu.gui.ActionHandlers.*;
+
+import javax.sound.sampled.*;
 
 /**
  * @author Kaan Ucar (324467)
@@ -76,7 +80,19 @@ class MapViewCreator {
             if(n != null){
                 groupRoute.getStyleClass().add(n.name());
 
-
+                try{
+                    File file = new File("sounds/HornOne.wav");
+                    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
+                    Clip clip = AudioSystem.getClip();
+                    clip.open(audioInputStream);
+                    clip.start();
+                } catch (UnsupportedAudioFileException e) {
+                    e.printStackTrace();
+                } catch (LineUnavailableException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
