@@ -68,9 +68,8 @@ public final class Game {
 
         boolean endGame = true;
 
-        Clip clip = SoundMaker.makeSound("sounds/MUSIQUE KAAN.wav");
-        clip.start();
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
+        Clip foregroundSound = SoundMaker.makeSound("sounds/MUSIQUE KAAN.wav");
+        SoundMaker.makeInfLoop(foregroundSound);
 
         while(endGame){
             updateGraphics(players, jeu);
@@ -202,12 +201,16 @@ public final class Game {
                     }
                     break;
             }
+
             if(jeu.lastPlayer() == jeu.currentPlayerId()){
                 endGame = false;
             }
 
             if(jeu.lastTurnBegins()){
                 sendInfo(players, info.get(jeu.currentPlayerId()).lastTurnBegins(jeu.currentPlayerState().carCount()));
+                /*foregroundSound.stop();
+                Clip lastTurnSound = SoundMaker.makeSound("sounds/Musique_tension.wav");
+                SoundMaker.makeLoop(lastTurnSound);*/
             }
 
             //prochain tour

@@ -23,4 +23,13 @@ public final class SoundMaker {
         }
         return null;
     }
+
+    /**
+     * Méthode utilsée pour répéter indéfiniement un son
+     * @param clip (Clip) : le clip audio en question
+     */
+    public static void makeInfLoop(Clip clip){
+        clip.start();
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
+    }
 }
