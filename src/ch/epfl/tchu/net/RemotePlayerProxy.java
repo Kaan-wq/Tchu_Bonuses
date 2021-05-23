@@ -84,6 +84,13 @@ public final class RemotePlayerProxy implements Player {
         return SERDE_SORTED_BAG_CARD.deserialize(sendInfoAndReceive(CHOOSE_ADDITIONAL_CARDS, listInfos));
     }
 
+    @Override
+    public void playSong(String song) {
+        List<String> listInfos = List.of(SERDE_STRING.serialize(song));
+        sendInfo(SONG, listInfos);
+    }
+
+
     /**
      * Méthode pour créer les messages à partir du MessageId et d'une liste
      *

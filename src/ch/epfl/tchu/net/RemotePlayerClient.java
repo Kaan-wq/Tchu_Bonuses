@@ -121,6 +121,10 @@ public final class RemotePlayerClient {
                         writer.write(SERDE_SORTED_BAG_CARD.serialize(chooseAdditionalCards) + '\n');
                         writer.flush();
                         break;
+                    case SONG:
+                        String song = SERDE_STRING.deserialize(received.get(1));
+                        player.playSong(song);
+                        break;
                 }
             }
         }catch(IOException e){ throw new UncheckedIOException(e); }

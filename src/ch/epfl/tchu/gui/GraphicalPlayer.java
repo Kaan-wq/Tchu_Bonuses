@@ -178,6 +178,12 @@ public final class GraphicalPlayer {
         makePopUpCards(possibilities, StringsFr.CHOOSE_ADDITIONAL_CARDS, screen, chooseCardsHandler);
     }
 
+    public void playSong(String song){
+        if (! isFxApplicationThread()) throw new AssertionError();
+
+        SoundMaker.makeSound(song);
+    }
+
     /**
      * Méthode privée pour faire la fenetre de choix des tickets
      *
@@ -209,7 +215,6 @@ public final class GraphicalPlayer {
         button.setOnAction(event -> {
             popUp.hide();
             ticketsHandler.onChooseTickets(SortedBag.of(listView.getSelectionModel().getSelectedItems()));
-            SoundMaker.makeSound("sounds/TicketDraw.wav").start();
         });
 
         VBox box = new VBox(textFlow, listView, button);

@@ -167,5 +167,10 @@ class GameTestUs {
         public SortedBag<Card> chooseAdditionalCards(List<SortedBag<Card>> options) {
             return options.get(rng.nextInt(options.size()));
         }
+
+        @Override
+        public void playSong(String song) {
+
+        }
     }
 }

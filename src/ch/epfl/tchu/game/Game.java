@@ -9,10 +9,6 @@ import ch.epfl.tchu.Preconditions;
 import ch.epfl.tchu.SortedBag;
 import ch.epfl.tchu.game.Route.Level;
 import ch.epfl.tchu.gui.Info;
-import ch.epfl.tchu.gui.SoundMaker;
-
-import javax.sound.sampled.Clip;
-
 
 /**
  * @author Kaan Ucar (324467)
@@ -62,18 +58,19 @@ public final class Game {
             SortedBag<Ticket> initialTickets = players.get(player).chooseInitialTickets();
             jeu = jeu.withInitiallyChosenTickets(player, initialTickets);
             sendInfo(players, info.get(player).keptTickets(initialTickets.size()));
+            players.get(player).playSong("sounds/TicketDraw.wav");
         }
 
         //boucle d'itération pour les tours des joueurs
 
         boolean endGame = true;
 
-        Clip foregroundSound = SoundMaker.makeSound("sounds/MUSIQUE KAAN.wav");
-        SoundMaker.makeInfLoop(foregroundSound);
+        //players.forEach((id, player) -> player.playSong("sounds/MUSIQUE KAAN.wav"));
 
         while(endGame){
             updateGraphics(players, jeu);
             Player.TurnKind action = players.get(jeu.currentPlayerId()).nextTurn();
+            Player currentPlayer = players.get(jeu.currentPlayerId());
 
             //choix de l'action
 
@@ -88,6 +85,7 @@ public final class Game {
 
                     //info sur les tickets qu'il garde
                     sendInfo(players, info.get(jeu.currentPlayerId()).keptTickets(keptTickets.size()));
+                    currentPlayer.playSong("sounds/TicketDraw.wav");
 
                     jeu = jeu.withChosenAdditionalTickets(topTickets, keptTickets);
 
@@ -105,6 +103,7 @@ public final class Game {
                         jeu = jeu.withBlindlyDrawnCard();
                         //info pioche carte du tas
                         sendInfo(players, info.get(jeu.currentPlayerId()).drewBlindCard());
+                        currentPlayer.playSong("sounds/CardFaceUpDraw.wav");
 
                     }else if(Constants.FACE_UP_CARD_SLOTS.contains(faceUpSlot)){
                         //carte visible si possible
@@ -112,6 +111,7 @@ public final class Game {
                         jeu = jeu.withDrawnFaceUpCard(faceUpSlot);
                         //info carte retourné
                         sendInfo(players, info.get(jeu.currentPlayerId()).drewVisibleCard(carteSlot));
+                        currentPlayer.playSong("sounds/CardFaceUpDraw.wav");
                     }
 
                     //mise à jour de la pioche.
@@ -134,6 +134,7 @@ public final class Game {
                         //info carte retourné
                         sendInfo(players, info.get(jeu.currentPlayerId()).drewVisibleCard(carteSlot));
                     }
+                    currentPlayer.playSong("sounds/CardFaceUpDraw.wav");
 
                     //mise à jour de la pioche.
                     jeu = jeu.withCardsDeckRecreatedIfNeeded(rng);
@@ -181,6 +182,7 @@ public final class Game {
                                     jeu = jeu.withClaimedRoute(claimed, unionChoice);
                                     //info construction avec additional
                                     sendInfo(players, info.get(jeu.currentPlayerId()).claimedRoute(claimed, unionChoice));
+                                    currentPlayer.playSong("sounds/HornOne.wav");
                                 }
                             }else{
                                 //info sur manque de cartes pour "payer" cartes additionnelles.
@@ -191,13 +193,14 @@ public final class Game {
                             jeu = jeu.withClaimedRoute(claimed, cartesUtiles); //info construction tunnel?
                             //info construction tunnel normale.
                             sendInfo(players, info.get(jeu.currentPlayerId()).claimedRoute(claimed, cartesUtiles));
-
+                            currentPlayer.playSong("sounds/HornOne.wav");
                         }
                     } else {
                         jeu = jeu.withClaimedRoute(claimed, cartesUtiles);
                         
                         //info prend un route normale
                         sendInfo(players, info.get(jeu.currentPlayerId()).claimedRoute(claimed, cartesUtiles));
+                        currentPlayer.playSong("sounds/HornOne.wav");
                     }
                     break;
             }
@@ -208,9 +211,6 @@ public final class Game {
 
             if(jeu.lastTurnBegins()){
                 sendInfo(players, info.get(jeu.currentPlayerId()).lastTurnBegins(jeu.currentPlayerState().carCount()));
-                /*foregroundSound.stop();
-                Clip lastTurnSound = SoundMaker.makeSound("sounds/Musique_tension.wav");
-                SoundMaker.makeLoop(lastTurnSound);*/
             }
 
             //prochain tour

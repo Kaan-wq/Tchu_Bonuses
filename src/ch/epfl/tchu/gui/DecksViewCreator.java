@@ -74,7 +74,6 @@ class DecksViewCreator {
         buttonCards.disableProperty().bind(cardHandler.isNull());
         buttonCards.setOnMouseClicked(e -> {
             cardHandler.get().onDrawCard(-1);
-            SoundMaker.makeSound("sounds/CardFaceUpDraw.wav").start();
         });
 
         vBox.getChildren().add(buttonTickets);
@@ -136,7 +135,6 @@ class DecksViewCreator {
         stackPane.disableProperty().bind(cardHandler.isNull());
         stackPane.setOnMouseClicked(e ->{
             cardHandler.get().onDrawCard(slot);
-            SoundMaker.makeSound("sounds/CardFaceUpDraw.wav").start();
         });
 
         vBox.getChildren().add(stackPane);

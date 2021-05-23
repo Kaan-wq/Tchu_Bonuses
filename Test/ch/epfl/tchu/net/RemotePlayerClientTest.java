@@ -79,5 +79,10 @@ class RemotePlayerClientTest {
         public SortedBag<Card> chooseAdditionalCards(List<SortedBag<Card>> options) {
             return null;
         }
+
+        @Override
+        public void playSong(String song) {
+
+        }
     }
 }

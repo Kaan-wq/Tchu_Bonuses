@@ -11,17 +11,16 @@ public final class SoundMaker {
      * Methode utilisée pour faire les sons
      * @param string (String) : le son à utilser
      */
-    public static Clip makeSound(String string){
+    public static void makeSound(String string){
         try{
             File file = new File(string);
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
-            return clip;
+            clip.start();
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ua) {
             ua.printStackTrace();
         }
-        return null;
     }
 
     /**

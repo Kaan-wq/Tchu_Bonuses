@@ -38,14 +38,13 @@ public final class ServerMain extends Application {
     public void start(Stage primaryStage) throws Exception {
         listParametres = getParameters().getRaw();
 
-        if(listParametres.isEmpty()){ listParametres = List.of("Thomas","Kaan"); }
+        if(listParametres.isEmpty()){ listParametres = List.of("Aksel","Kaan"); }
 
         try{
             ServerSocket serverSocket = new ServerSocket(5108);
             Socket socket = serverSocket.accept();
             Player clientPlayer = new GraphicalPlayerAdapter();
             Player remotePlayerProxy = new RemotePlayerProxy(socket);
-
 
             var playerNames = new EnumMap(PlayerId.class);
             playerNames.put(PLAYER_1, listParametres.get(0));

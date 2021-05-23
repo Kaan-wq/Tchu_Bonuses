@@ -25,9 +25,8 @@ public final class ClientMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         listParametres = getParameters().getRaw();
-        if(listParametres.isEmpty()){
-            listParametres = List.of("localhost","5108");
-        }
+        if(listParametres.isEmpty()){ listParametres = List.of("localhost","5108"); }
+
         RemotePlayerClient remotePlayerClient = new RemotePlayerClient(new GraphicalPlayerAdapter(),
                 listParametres.get(0) , Integer.parseInt(listParametres.get(1)));
 

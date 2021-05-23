@@ -75,7 +75,6 @@ class MapViewCreator {
         jeu.getLordRoute(route).addListener((p, o, n) ->{
             if(n != null){
                 groupRoute.getStyleClass().add(n.name());
-                SoundMaker.makeSound("sounds/HornOne.wav").start();
             }
         });
 

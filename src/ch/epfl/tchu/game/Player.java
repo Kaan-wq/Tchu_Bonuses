@@ -104,4 +104,10 @@ public interface Player {
      * @return le multiensemble de cartes choisi pour s'emparer du tunnel
      */
     SortedBag<Card> chooseAdditionalCards(List<SortedBag<Card>> options);
+
+    /**
+     * Méthode pour passer un son
+     * @param song (String) : le son à passer
+     */
+    void playSong(String song);
 }
