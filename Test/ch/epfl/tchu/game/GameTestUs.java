@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class GameTestUs {
 
     private long randSeed = 2;
@@ -169,7 +167,7 @@ class GameTestUs {
         }
 
         @Override
-        public void playSong(String song) {
+        public void playSong(String song, int loop) {
 
         }
     }

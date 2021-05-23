@@ -178,10 +178,10 @@ public final class GraphicalPlayer {
         makePopUpCards(possibilities, StringsFr.CHOOSE_ADDITIONAL_CARDS, screen, chooseCardsHandler);
     }
 
-    public void playSong(String song){
+    public void playSong(String song, int loop){
         if (! isFxApplicationThread()) throw new AssertionError();
 
-        SoundMaker.makeSound(song);
+        SoundMaker.playSound(song, loop);
     }
 
     /**

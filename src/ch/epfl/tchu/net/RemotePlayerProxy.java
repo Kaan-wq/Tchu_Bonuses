@@ -85,8 +85,8 @@ public final class RemotePlayerProxy implements Player {
     }
 
     @Override
-    public void playSong(String song) {
-        List<String> listInfos = List.of(SERDE_STRING.serialize(song));
+    public void playSong(String song, int loop) {
+        List<String> listInfos = List.of(SERDE_STRING.serialize(song), SERDE_INT.serialize(loop));
         sendInfo(SONG, listInfos);
     }
 

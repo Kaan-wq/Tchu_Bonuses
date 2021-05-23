@@ -116,5 +116,5 @@ public class GraphicalPlayerAdapter implements Player{
     }
 
     @Override
-    public void playSong(String song) { runLater(() -> graphicalPlayer.playSong(song)); }
+    public void playSong(String song, int loop) { runLater(() -> graphicalPlayer.playSong(song, loop)); }
 }

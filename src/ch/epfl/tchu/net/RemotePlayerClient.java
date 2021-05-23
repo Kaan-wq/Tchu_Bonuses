@@ -123,7 +123,8 @@ public final class RemotePlayerClient {
                         break;
                     case SONG:
                         String song = SERDE_STRING.deserialize(received.get(1));
-                        player.playSong(song);
+                        int loop = SERDE_INT.deserialize(received.get(2));
+                        player.playSong(song, loop);
                         break;
                 }
             }

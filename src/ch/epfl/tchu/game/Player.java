@@ -108,6 +108,7 @@ public interface Player {
     /**
      * Méthode pour passer un son
      * @param song (String) : le son à passer
+     * @param loop
      */
-    void playSong(String song);
+    void playSong(String song, int loop);
 }

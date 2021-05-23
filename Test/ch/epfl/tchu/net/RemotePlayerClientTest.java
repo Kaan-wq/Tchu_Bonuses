@@ -6,8 +6,6 @@ import ch.epfl.tchu.game.*;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class RemotePlayerClientTest {
     public static void main(String[] args) {
         System.out.println("Starting client!");
@@ -81,7 +79,7 @@ class RemotePlayerClientTest {
         }
 
         @Override
-        public void playSong(String song) {
+        public void playSong(String song, int loop) {
 
         }
     }
