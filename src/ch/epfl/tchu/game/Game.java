@@ -64,7 +64,7 @@ public final class Game {
 
         boolean endGame = true;
 
-        players.forEach((id, player) -> player.playSong("sounds/MUSIQUE KAAN.wav", -1));
+        players.forEach((id, player) -> player.playSong("sounds/Musique_fond.wav", -1));
 
         while(endGame){
             updateGraphics(players, jeu);

@@ -27,8 +27,6 @@ public final class ClientMain extends Application {
         listParametres = getParameters().getRaw();
         if(listParametres.isEmpty()){ listParametres = List.of("localhost","5108"); }
 
-        //SoundMaker.makeInfLoop(SoundMaker.makeSound("sounds/MUSIQUE KAAN.wav"));
-
         RemotePlayerClient remotePlayerClient = new RemotePlayerClient(new GraphicalPlayerAdapter(),
                 listParametres.get(0) , Integer.parseInt(listParametres.get(1)));
 

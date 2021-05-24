@@ -56,8 +56,7 @@ public final class ServerMain extends Application {
 
             //SoundMaker.makeInfLoop(SoundMaker.makeSound("sounds/MUSIQUE KAAN.wav"));
 
-            new Thread(() -> Game.play(playersMap,
-                    playerNames, SortedBag.of(ChMap.tickets()), new Random())).start();
+            new Thread(() -> Game.play(playersMap, playerNames, SortedBag.of(ChMap.tickets()), new Random())).start();
 
         }catch(Exception e){ throw new Error(); }
     }
