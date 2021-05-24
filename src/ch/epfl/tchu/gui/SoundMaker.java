@@ -18,10 +18,8 @@ public final class SoundMaker {
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
+            clip.loop(loop);
 
-            if (loop == -1) {
-                clip.loop(Clip.LOOP_CONTINUOUSLY);
-            }
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ua) { ua.printStackTrace(); }
     }
 
