@@ -38,7 +38,7 @@ public final class ServerMain extends Application {
     public void start(Stage primaryStage) throws Exception {
         listParametres = getParameters().getRaw();
 
-        if(listParametres.isEmpty()){ listParametres = List.of("Aksel","Kaan"); }
+        if(listParametres.isEmpty()){ listParametres = List.of("Kaan","Félix"); }
 
         try{
             ServerSocket serverSocket = new ServerSocket(5108);

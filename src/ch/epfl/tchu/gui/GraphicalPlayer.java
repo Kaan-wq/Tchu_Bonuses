@@ -199,6 +199,7 @@ public final class GraphicalPlayer {
         popUp.initOwner(screen);
         popUp.initModality(Modality.WINDOW_MODAL);
         popUp.setTitle(titre);
+        popUp.setOnCloseRequest(Event::consume);
 
         Button button = new Button("Choisir");
 
