@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.StringConverter;
 
+import javax.sound.sampled.Clip;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +42,7 @@ public final class GraphicalPlayer {
     private final ObservableGameState jeu;
     private final Stage screen;
     private final ObservableList<Text> listText;
+    private final Clip foreSound = SoundMaker.makeSound("sounds/Musique_fond.wav");
 
     //propriètés des handler qui regardent si le joueur peut faire ces actions ou pas (alors null à l'intérieur)
     private final ObjectProperty<DrawCardHandler> cardsHandlerProperty = new SimpleObjectProperty<>();
@@ -181,7 +183,16 @@ public final class GraphicalPlayer {
     public void playSong(String song, int loop){
         if (! isFxApplicationThread()) throw new AssertionError();
 
-        SoundMaker.playSound(song, loop);
+        //SoundMaker.playSound(song, loop);
+
+        if(loop == Clip.LOOP_CONTINUOUSLY){
+            this.foreSound.start();
+            this.foreSound.loop(Clip.LOOP_CONTINUOUSLY);
+        }else if(loop == 1){
+            this.foreSound.stop();
+        }else{
+            SoundMaker.playSound(song, loop);
+        }
     }
 
     /**

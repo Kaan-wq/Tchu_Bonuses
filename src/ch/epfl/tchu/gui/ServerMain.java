@@ -54,8 +54,6 @@ public final class ServerMain extends Application {
             playersMap.put(PLAYER_1, remotePlayerProxy);
             playersMap.put(PLAYER_2, clientPlayer);
 
-            //SoundMaker.makeInfLoop(SoundMaker.makeSound("sounds/MUSIQUE KAAN.wav"));
-
             new Thread(() -> Game.play(playersMap, playerNames, SortedBag.of(ChMap.tickets()), new Random())).start();
 
         }catch(Exception e){ throw new Error(); }
