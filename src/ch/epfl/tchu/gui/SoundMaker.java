@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 
 public final class SoundMaker {
+    public static final int STOP = 1;
+
     private SoundMaker(){}
 
     /**

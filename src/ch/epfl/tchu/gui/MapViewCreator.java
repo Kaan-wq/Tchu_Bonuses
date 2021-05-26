@@ -1,9 +1,7 @@
 package ch.epfl.tchu.gui;
 
 import ch.epfl.tchu.SortedBag;
-import ch.epfl.tchu.game.Card;
-import ch.epfl.tchu.game.ChMap;
-import ch.epfl.tchu.game.Route;
+import ch.epfl.tchu.game.*;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -49,6 +47,10 @@ class MapViewCreator {
 
         for(Route route : ChMap.routes()){
             home.getChildren().add(makeGroupOfRoute(route, jeu, routeHandler, select));
+        }
+
+        for(Station station : ChMap.stations().subList(0, 34)){
+            home.getChildren().add(makeGroupTickets(station));
         }
 
         return  home;
@@ -136,5 +138,13 @@ class MapViewCreator {
         wagon.getStyleClass().add("car");
 
         return wagon;
+    }
+
+    private static Circle makeGroupTickets(Station station){
+        Circle point = new Circle(5);
+        point.setId(String.valueOf(station.id()));
+        point.getStyleClass().addAll("station", "RED", "filled");
+
+        return point;
     }
 }

@@ -5,6 +5,7 @@ import ch.epfl.tchu.game.Card;
 import ch.epfl.tchu.game.Route;
 import ch.epfl.tchu.game.Trail;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 
