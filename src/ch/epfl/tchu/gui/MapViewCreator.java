@@ -3,10 +3,12 @@ package ch.epfl.tchu.gui;
 import ch.epfl.tchu.SortedBag;
 import ch.epfl.tchu.game.*;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
@@ -50,7 +52,7 @@ class MapViewCreator {
         }
 
         for(Station station : ChMap.stations().subList(0, 34)){
-            home.getChildren().add(makeGroupTickets(station));
+            home.getChildren().add(makeGroupTickets(station, jeu.getClickedStations(station)));
         }
 
         return  home;
@@ -140,10 +142,13 @@ class MapViewCreator {
         return wagon;
     }
 
-    private static Circle makeGroupTickets(Station station){
-        Circle point = new Circle(5);
+    private static Circle makeGroupTickets(Station station, ReadOnlyBooleanProperty clicked){
+        Circle point = new Circle(12, Paint.valueOf("RED"));
         point.setId(String.valueOf(station.id()));
-        point.getStyleClass().addAll("station", "RED", "filled");
+        point.getStyleClass().addAll("station", "filled");
+        point.setVisible(false);
+
+        clicked.addListener((p, o, n) -> point.setVisible(p.getValue()));
 
         return point;
     }

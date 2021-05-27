@@ -39,6 +39,8 @@ public class ObservableGameState {
     private final List<IntegerProperty> handCardsNumber = new ArrayList<>();
     private final List<BooleanProperty> routesPossibleClaim = new ArrayList<>();
 
+    private final List<BooleanProperty> clickedStations = new ArrayList<>();
+
 
     public ObservableGameState(PlayerId ownId){
         this.ownId = ownId;
@@ -59,7 +61,7 @@ public class ObservableGameState {
 
         for(Route route : ChMap.routes()){
             ObjectProperty<PlayerId> routeLord = new SimpleObjectProperty<>();
-            BooleanProperty routePossible = new SimpleBooleanProperty();
+            BooleanProperty routePossible = new SimpleBooleanProperty(false);
 
             routesLords.add(routeLord);
             routesPossibleClaim.add(routePossible);
@@ -71,6 +73,10 @@ public class ObservableGameState {
         }
 
         listBillets = FXCollections.observableList(new ArrayList<>());
+
+        for(Station station : ChMap.stations().subList(0, 34)){
+            clickedStations.add(new SimpleBooleanProperty(false));
+        }
     }
 
     /**
@@ -216,6 +222,14 @@ public class ObservableGameState {
     public ReadOnlyIntegerProperty getPoints(PlayerId playerId){
         return points.get(playerId.ordinal());
     }
+
+    /**
+     * @param station (Station) : la station dont on désire la propriété
+     * @return (ReadOnlyBooleanProperty) : la propriété désirée
+     */
+    public ReadOnlyBooleanProperty getClickedStations(Station station){ return clickedStations.get(ChMap.stations().indexOf(station)); }
+
+    public void setClickedStations(Station station, boolean value){ clickedStations.get(ChMap.stations().indexOf(station)).set(value); }
 
     /**
      * Méthode privée afin de modifier la propriété du nombre de cartes de type "card" en main
