@@ -17,6 +17,12 @@ public final class ClientMain extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+    public static void startGameClient(String name, String number){
+        RemotePlayerClient remotePlayerClient = new RemotePlayerClient(new GraphicalPlayerAdapter(),
+                name , Integer.parseInt(number));
+
+        new Thread(remotePlayerClient::run).start();
+    }
 
     /**
      * @param primaryStage (Stage) : pas utilisé dans cette méthode
@@ -27,9 +33,14 @@ public final class ClientMain extends Application {
         listParametres = getParameters().getRaw();
         if(listParametres.isEmpty()){ listParametres = List.of("localhost","5108"); }
 
-        RemotePlayerClient remotePlayerClient = new RemotePlayerClient(new GraphicalPlayerAdapter(),
+        InitialMenuCreator.menuCreator(primaryStage, "client");
+
+        /*RemotePlayerClient remotePlayerClient = new RemotePlayerClient(new GraphicalPlayerAdapter(),
                 listParametres.get(0) , Integer.parseInt(listParametres.get(1)));
 
-        new Thread(remotePlayerClient::run).start();
+        new Thread(remotePlayerClient::run).start();*/
     }
+
+
+
 }
