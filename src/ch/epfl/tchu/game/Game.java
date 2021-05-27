@@ -205,7 +205,6 @@ public final class Game {
                     }
                     break;
             }
-            players.forEach((id, player)-> player.playSong("sounds/Musique_fond.wav", 1));
 
             if(jeu.lastPlayer() == jeu.currentPlayerId()){
                 endGame = false;

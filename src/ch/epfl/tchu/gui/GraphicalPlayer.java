@@ -183,16 +183,11 @@ public final class GraphicalPlayer {
     public void playSong(String song, int loop){
         if (! isFxApplicationThread()) throw new AssertionError();
 
-        //SoundMaker.playSound(song, loop);
-
         if(loop == Clip.LOOP_CONTINUOUSLY){
             this.foreSound.start();
             this.foreSound.loop(Clip.LOOP_CONTINUOUSLY);
-        }else if(loop == 1){
-            this.foreSound.stop();
-        }else{
-            SoundMaker.playSound(song, loop);
-        }
+        }else if(loop == 1){ this.foreSound.stop();
+        }else{ SoundMaker.playSound(song, loop); }
     }
 
     /**

@@ -1,5 +1,8 @@
 package ch.epfl.tchu.gui;
 
+import java.text.Normalizer;
+import java.util.regex.Pattern;
+
 public final class StringsFr {
     private StringsFr() {}
 

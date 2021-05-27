@@ -51,6 +51,7 @@ public final class Stage9Test extends Application {
         BorderPane mainPane =
                 new BorderPane(mapView, null, cardsView, handView, infoView);
         primaryStage.setScene(new Scene(mainPane));
+        mainPane.setOnMouseClicked(e-> System.out.println(e.getX() + "  " + e.getY()));
         primaryStage.show();
 
         setState(gameState);
