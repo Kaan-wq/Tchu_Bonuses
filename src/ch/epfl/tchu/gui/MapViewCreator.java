@@ -85,6 +85,12 @@ class MapViewCreator {
             }
         });
 
+        jeu.getLonguestTrailProperty().addListener((p,o,n)->{
+            if(n.getRoutes().contains(route)){
+                groupRoute.getStyleClass().add("epaisse");
+            }
+        });
+
         //Liens pour la route
         groupRoute.disableProperty().bind(routeHandler.isNull().or(jeu.getBooleanRoute(route).not()));
 
@@ -141,6 +147,7 @@ class MapViewCreator {
 
         Group wagon = new Group(rectangle, circleOne, circleTwo);
         wagon.getStyleClass().add("car");
+
 
         return wagon;
     }

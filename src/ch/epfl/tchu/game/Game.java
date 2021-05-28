@@ -9,6 +9,7 @@ import ch.epfl.tchu.Preconditions;
 import ch.epfl.tchu.SortedBag;
 import ch.epfl.tchu.game.Route.Level;
 import ch.epfl.tchu.gui.Info;
+import ch.epfl.tchu.gui.ObservableGameState;
 
 import javax.sound.sampled.Clip;
 
@@ -241,17 +242,22 @@ public final class Game {
 
             sendInfo(players, info.get(jeu.currentPlayerId()).getsLongestTrailBonus(Trail.longest(jeu.currentPlayerState().routes())));
             sendInfo(players, info.get(jeu.currentPlayerId().next()).getsLongestTrailBonus(Trail.longest(jeu.playerState(jeu.currentPlayerId().next()).routes())));
+            ObservableGameState.setLonguestTrail(Trail.longest(jeu.currentPlayerState().routes()));
 
         }else if(lengthMaxOne > lengthMaxTwo){
             playerPointsOne += Constants.LONGEST_TRAIL_BONUS_POINTS;
 
             sendInfo(players, info.get(jeu.currentPlayerId()).getsLongestTrailBonus(Trail.longest(jeu.currentPlayerState().routes())));
+            ObservableGameState.setLonguestTrail(Trail.longest(jeu.currentPlayerState().routes()));
+
 
         }else{
             playerPointsTwo += Constants.LONGEST_TRAIL_BONUS_POINTS;
 
             sendInfo(players, info.get(jeu.currentPlayerId().next()).getsLongestTrailBonus(Trail.longest(jeu.playerState(jeu.currentPlayerId().next()).routes())));
+            ObservableGameState.setLonguestTrail(Trail.longest(jeu.playerState(jeu.currentPlayerId().next()).routes()));
         }
+
 
         updateGraphics(players, jeu);
 

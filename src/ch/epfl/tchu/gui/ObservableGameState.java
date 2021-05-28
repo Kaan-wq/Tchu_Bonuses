@@ -40,6 +40,7 @@ public class ObservableGameState {
     private final List<BooleanProperty> routesPossibleClaim = new ArrayList<>();
 
     private final List<BooleanProperty> clickedStations = new ArrayList<>();
+    private static SimpleObjectProperty<Trail> longuestTrail;
 
 
     public ObservableGameState(PlayerId ownId){
@@ -77,6 +78,8 @@ public class ObservableGameState {
         for(Station station : ChMap.stations().subList(0, 34)){
             clickedStations.add(new SimpleBooleanProperty(false));
         }
+
+        longuestTrail = new SimpleObjectProperty<>();
     }
 
     /**
@@ -229,7 +232,20 @@ public class ObservableGameState {
      */
     public ReadOnlyBooleanProperty getClickedStations(Station station){ return clickedStations.get(ChMap.stations().indexOf(station)); }
 
+    /**
+     *
+     * @param station recherchée dans le billet
+     * @param value boolean pour savoir si il est cliqué
+     */
     public void setClickedStations(Station station, boolean value){ clickedStations.get(ChMap.stations().indexOf(station)).set(value); }
+
+    public ReadOnlyObjectProperty<Trail> getLonguestTrailProperty (){
+        return longuestTrail;
+    }
+
+    public static void setLonguestTrail(Trail longuest){
+        longuestTrail.set(longuest);
+    }
 
     /**
      * Méthode privée afin de modifier la propriété du nombre de cartes de type "card" en main

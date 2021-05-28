@@ -10,7 +10,7 @@ import java.util.List;
 
 public final class Trail {
 
-    private final List<Route> route;
+    private final List<Route> routes;
     private final Station from;
     private final Station to;
     private final int length;
@@ -21,7 +21,7 @@ public final class Trail {
      * @param to : station d'arrivée du chemin
      */
     private Trail(List<Route> routes, Station from, Station to){
-        this.route = routes;
+        this.routes = routes;
 
         if(routes == null || routes.size() == 0){
             this.length = 0;
@@ -61,12 +61,12 @@ public final class Trail {
             for(Trail trail : singleTrails){
 
                 List<Route> routesCopie = new ArrayList<>(routes);
-                routesCopie.removeAll(trail.route);
+                routesCopie.removeAll(trail.routes);
 
                 for(Route route : routesCopie){
                     if(trail.to.equals(route.station1())){
 
-                        List<Route> ephemere = new ArrayList<>(trail.route);
+                        List<Route> ephemere = new ArrayList<>(trail.routes);
                         ephemere.add(route);
 
                         Trail temp = new Trail(ephemere, trail.station1(), route.station2());
@@ -78,7 +78,7 @@ public final class Trail {
                         }
                     }else if(trail.to.equals(route.station2())){
 
-                        List<Route> ephemere = new ArrayList<>(trail.route);
+                        List<Route> ephemere = new ArrayList<>(trail.routes);
                         ephemere.add(route);
 
                         Trail temp = new Trail(ephemere, trail.station1(), route.station1());
@@ -136,20 +136,24 @@ public final class Trail {
         }
     }
 
+    public List<Route> getRoutes() {
+        return List.copyOf(routes);
+    }
+
     /**
      * @return la représentation textuelle d'un chemin, les stations de
      * chaque routes par lesquels passe le chemin
      */
     @Override
     public String toString(){
-        if(route == null){
+        if(routes == null){
             return "Null Trail";
         }
         List<String> gares = new ArrayList<>();
         String currentStation = from.name();
         gares.add(currentStation);
 
-        for(Route road : route){
+        for(Route road : routes){
             if(currentStation.equals(road.station1().name())){
                 gares.add(road.stationOpposite(station1()).name());
                 currentStation = road.station2().name();

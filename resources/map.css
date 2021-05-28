@@ -35,6 +35,12 @@ ImageView {
     -fx-stroke-width: 2;
 }
 
+.trail Rectangle{
+    -fx-stroke-type: centered;
+    -fx-stroke: black;
+    -fx-stroke-width: 4;
+}
+
 .car Circle {
     -fx-scale-x: 1.1;
     -fx-scale-y: 1.1;
