@@ -57,13 +57,15 @@ public final class GraphicalPlayer {
      * @param playerNames (Map<PlayerId, String>) : map des noms des joueurs
      */
     public GraphicalPlayer(PlayerId ownId, Map<PlayerId, String> playerNames){
-        if (! isFxApplicationThread()) throw new AssertionError();
+        if (! isFxApplicationThread()) throw new AssertionError(); // assert
 
         jeu = new ObservableGameState(ownId);
         listText = FXCollections.observableList(new ArrayList<>());
 
+
         screen = new Stage();
         screen.setTitle(String.join(" ", List.of("tCHu","\u2014", playerNames.get(ownId))));
+        screen.initOwner(null);
 
         Node mapView = MapViewCreator.createMapView(jeu, routesHandlerProperty, this::chooseClaimCards);
         Node cardsView = DecksViewCreator.createCardsView(jeu, ticketsHandlerProperty, cardsHandlerProperty);
@@ -185,10 +187,12 @@ public final class GraphicalPlayer {
         if (! isFxApplicationThread()) throw new AssertionError();
 
         if(loop == Clip.LOOP_CONTINUOUSLY){
+
             FloatControl controlSound = (FloatControl) this.foreSound.getControl(FloatControl.Type.MASTER_GAIN);
             controlSound.setValue(-20.f);
             this.foreSound.start();
             this.foreSound.loop(Clip.LOOP_CONTINUOUSLY);
+
         }else if(loop == 1){
             this.foreSound.stop();
         }else{ SoundMaker.playSound(song, loop); }

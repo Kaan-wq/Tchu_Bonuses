@@ -6,6 +6,7 @@ import javafx.animation.Animation;
 import javafx.animation.ScaleTransition;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
+import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
@@ -85,11 +86,6 @@ class MapViewCreator {
             }
         });
 
-        jeu.getLonguestTrailProperty().addListener((p,o,n)->{
-            if(n.getRoutes().contains(route)){
-                groupRoute.getStyleClass().add("epaisse");
-            }
-        });
 
         //Liens pour la route
         groupRoute.disableProperty().bind(routeHandler.isNull().or(jeu.getBooleanRoute(route).not()));
@@ -112,7 +108,7 @@ class MapViewCreator {
 
         for (int i = 0 ; i < route.length(); ++i){
             //initialiser le groupe de la partie de route
-            Group subGroupRoute = new Group(makeVoie(), makeWagon());
+            Group subGroupRoute = new Group(makeVoie(), makeWagon(), bigRec(route, jeu.getLonguestTrailProperty()));
             String lengthValue = String.valueOf(i + 1);
             String newId = route.id() + "_" + lengthValue;
             subGroupRoute.setId(newId);
@@ -171,5 +167,19 @@ class MapViewCreator {
         });
 
         return point;
+    }
+
+    private static Rectangle bigRec(Route route, ReadOnlyObjectProperty<Trail> trailProp){
+        Rectangle big = new Rectangle(36, 12);
+        big.getStyleClass().add("trail");
+        big.setVisible(false);
+
+        trailProp.addListener((p,o,n)->{
+            if(n.getRoutes().contains(route)){
+                big.setVisible(true);
+            }
+        });
+
+        return big;
     }
 }

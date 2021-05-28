@@ -46,7 +46,7 @@ public class InitialMenuCreator {
              playerName2 = new TextField("Nom du deuxième joueur");
         }else{
             playerName = new TextField("Nom du port / localhost");
-            playerName2 = new TextField("Nunméro du port / 5108");
+            playerName2 = new TextField("Numéro du port / 5108");
         }
 
 
@@ -69,8 +69,7 @@ public class InitialMenuCreator {
         sc.getStylesheets().add("menu.css");
 
         button.setOnAction(event -> {
-            //menu.hide();
-            //menu.close();
+
             if(id.equals("serveur")){
                 ServerMain.startedGame(playerName.getText(), playerName2.getText());
             }else{
