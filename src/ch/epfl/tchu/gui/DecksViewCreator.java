@@ -1,6 +1,10 @@
 package ch.epfl.tchu.gui;
 
-import ch.epfl.tchu.game.*;
+import ch.epfl.tchu.game.Card;
+import ch.epfl.tchu.game.Constants;
+import ch.epfl.tchu.game.Ticket;
+import ch.epfl.tchu.gui.ActionHandlers.DrawCardHandler;
+import ch.epfl.tchu.gui.ActionHandlers.DrawTicketsHandler;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyIntegerProperty;
@@ -15,7 +19,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import ch.epfl.tchu.gui.ActionHandlers.*;
 
 /**
  * @author Kaan Ucar (324467)
@@ -26,7 +29,7 @@ class DecksViewCreator {
     private DecksViewCreator(){}
 
     /**
-     * Méthode pour faire l'nterface visible des cartes de la mmain du joueur
+     * Méthode pour faire l'nterface visible des cartes de la main du joueur
      *
      * @param observableState (ObservableGameState)
      * @return (Node) : le graphe de scène des cartes de la main du joueur
@@ -34,7 +37,13 @@ class DecksViewCreator {
     public static Node createHandView(ObservableGameState observableState){
 
         ObservableList<Ticket> tickets = observableState.getListBillets();
-        ListView listView = new ListView(tickets);
+        ListView<Ticket> listView = new ListView(tickets);
+
+        listView.getSelectionModel().selectedItemProperty().addListener((p, o, n) ->{
+            if(o != null){o.getStations().forEach(s -> observableState.setClickedStations(s, false)); }
+            n.getStations().forEach(s -> observableState.setClickedStations(s, true));
+        });
+
         listView.setId("tickets");
 
         HBox littleBox = new HBox();
@@ -72,9 +81,7 @@ class DecksViewCreator {
 
         Button buttonCards = makeButton(observableState.getRemainingCards(), "Cards");
         buttonCards.disableProperty().bind(cardHandler.isNull());
-        buttonCards.setOnMouseClicked(e -> {
-            cardHandler.get().onDrawCard(-1);
-        });
+        buttonCards.setOnMouseClicked(e -> cardHandler.get().onDrawCard(-1));
 
         vBox.getChildren().add(buttonTickets);
 
@@ -133,9 +140,7 @@ class DecksViewCreator {
 
         //Mouse click
         stackPane.disableProperty().bind(cardHandler.isNull());
-        stackPane.setOnMouseClicked(e ->{
-            cardHandler.get().onDrawCard(slot);
-        });
+        stackPane.setOnMouseClicked(e -> cardHandler.get().onDrawCard(slot));
 
         vBox.getChildren().add(stackPane);
     }

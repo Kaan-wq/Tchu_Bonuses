@@ -44,8 +44,6 @@ ImageView {
 }
 
 .station Circle {
-    -fx-stroke-width: 1;
-    -fx-stroke: dimgrey;
     -fx-fill: white;
 }
 

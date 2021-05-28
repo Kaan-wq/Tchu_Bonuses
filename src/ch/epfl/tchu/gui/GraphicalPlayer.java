@@ -26,6 +26,7 @@ import javafx.stage.StageStyle;
 import javafx.util.StringConverter;
 
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -184,9 +185,12 @@ public final class GraphicalPlayer {
         if (! isFxApplicationThread()) throw new AssertionError();
 
         if(loop == Clip.LOOP_CONTINUOUSLY){
+            FloatControl controlSound = (FloatControl) this.foreSound.getControl(FloatControl.Type.MASTER_GAIN);
+            controlSound.setValue(-20.f);
             this.foreSound.start();
             this.foreSound.loop(Clip.LOOP_CONTINUOUSLY);
-        }else if(loop == 1){ this.foreSound.stop();
+        }else if(loop == 1){
+            this.foreSound.stop();
         }else{ SoundMaker.playSound(song, loop); }
     }
 

@@ -40,7 +40,4 @@ public final class ClientMain extends Application {
 
         new Thread(remotePlayerClient::run).start();*/
     }
-
-
-
 }

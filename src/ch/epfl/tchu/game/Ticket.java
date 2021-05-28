@@ -49,7 +49,7 @@ public final class Ticket implements Comparable<Ticket> {
      * @param points : les points du ticket
      */
     public Ticket(Station from, Station to, int points){
-        this(new ArrayList<>(Collections.singletonList(new Trip(from,to,points))));
+        this(new ArrayList<>(Collections.singletonList(new Trip(from, to, points))));
     }
 
     /**
@@ -113,5 +113,12 @@ public final class Ticket implements Comparable<Ticket> {
     @Override
     public String toString() {
         return computeText();
+    }
+
+    /**
+     * @return (List<Station>) : stations de départ et d'arrivée du ticket
+     */
+    public List<Station> getStations(){
+        return List.of(voyage.get(0).from(), voyage.get(voyage.size() - 1).to());
     }
 }
