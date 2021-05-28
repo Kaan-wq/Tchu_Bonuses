@@ -2,6 +2,8 @@ package ch.epfl.tchu.gui;
 
 import ch.epfl.tchu.SortedBag;
 import ch.epfl.tchu.game.*;
+import javafx.animation.Animation;
+import javafx.animation.ScaleTransition;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.scene.Group;
@@ -14,6 +16,7 @@ import javafx.scene.shape.Rectangle;
 
 import java.util.List;
 import ch.epfl.tchu.gui.ActionHandlers.*;
+import javafx.util.Duration;
 
 /**
  * @author Kaan Ucar (324467)
@@ -148,7 +151,17 @@ class MapViewCreator {
         point.getStyleClass().addAll("station", "filled");
         point.setVisible(false);
 
-        clicked.addListener((p, o, n) -> point.setVisible(p.getValue()));
+        //Animation
+        ScaleTransition transition = new ScaleTransition(Duration.seconds(3), point);
+        transition.setCycleCount(Animation.INDEFINITE);
+        transition.setAutoReverse(true);
+        transition.setToX(0.5);
+        transition.setToY(0.5);
+
+        clicked.addListener((p, o, n) ->{
+            point.setVisible(p.getValue());
+            transition.play();
+        });
 
         return point;
     }
