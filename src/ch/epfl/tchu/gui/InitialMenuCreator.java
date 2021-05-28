@@ -69,8 +69,8 @@ public class InitialMenuCreator {
         sc.getStylesheets().add("menu.css");
 
         button.setOnAction(event -> {
-            menu.hide();
-            menu.close();
+            //menu.hide();
+            //menu.close();
             if(id.equals("serveur")){
                 ServerMain.startedGame(playerName.getText(), playerName2.getText());
             }else{
