@@ -76,7 +76,7 @@ public class ObservableGameState {
 
         listBillets = FXCollections.observableList(new ArrayList<>());
 
-        for(Station station : ChMap.stations().subList(0, 34)){
+        for(Station station : ChMap.stations()){
             clickedStations.add(new SimpleBooleanProperty(false));
         }
 
