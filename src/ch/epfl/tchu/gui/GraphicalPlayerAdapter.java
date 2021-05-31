@@ -3,7 +3,6 @@ package ch.epfl.tchu.gui;
 import ch.epfl.tchu.SortedBag;
 import ch.epfl.tchu.game.*;
 
-import javax.sound.sampled.Clip;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -118,4 +117,7 @@ public class GraphicalPlayerAdapter implements Player{
 
     @Override
     public void playSong(String song, int loop) { runLater(() -> graphicalPlayer.playSong(song, loop)); }
+
+    @Override
+    public void longest(List<Route> routesP1, List<Route> routesP2) { runLater(() -> graphicalPlayer.longest(routesP1, routesP2)); }
 }

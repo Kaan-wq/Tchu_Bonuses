@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.StringConverter;
 
+import javax.naming.NamingSecurityException;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import java.util.ArrayList;
@@ -183,6 +184,11 @@ public final class GraphicalPlayer {
         makePopUpCards(possibilities, StringsFr.CHOOSE_ADDITIONAL_CARDS, screen, chooseCardsHandler);
     }
 
+    /**
+     * Joue un son
+     * @param song (String) : le son à jouer
+     * @param loop (int) : le durée
+     */
     public void playSong(String song, int loop){
         if (! isFxApplicationThread()) throw new AssertionError();
 
@@ -196,6 +202,12 @@ public final class GraphicalPlayer {
         }else if(loop == 1){
             this.foreSound.stop();
         }else{ SoundMaker.playSound(song, loop); }
+    }
+
+    public void longest(List<Route> routesP1, List<Route> routesP2){
+        assert(isFxApplicationThread());
+
+        ObservableGameState.setLonguestTrail(routesP1, routesP2);
     }
 
     /**

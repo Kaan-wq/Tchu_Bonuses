@@ -11,6 +11,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -108,7 +109,10 @@ class MapViewCreator {
 
         for (int i = 0 ; i < route.length(); ++i){
             //initialiser le groupe de la partie de route
-            Group subGroupRoute = new Group(makeVoie(), makeWagon(), bigRec(route, jeu.getLonguestTrailProperty()));
+            Group subGroupRoute = new Group(makeVoie(), makeWagon(),
+                    bigRec(route, jeu.getLonguestTrailP1Property()),
+                    bigRec(route, jeu.getLonguestTrailP2Property()));
+
             String lengthValue = String.valueOf(i + 1);
             String newId = route.id() + "_" + lengthValue;
             subGroupRoute.setId(newId);
@@ -149,7 +153,7 @@ class MapViewCreator {
     }
 
     private static Circle makeGroupTickets(Station station, ReadOnlyBooleanProperty clicked){
-        Circle point = new Circle(12, Paint.valueOf("RED"));
+        Circle point = new Circle(6, Paint.valueOf("RED"));
         point.setId(String.valueOf(station.id()));
         point.getStyleClass().addAll("station", "filled");
         point.setVisible(false);
@@ -158,8 +162,8 @@ class MapViewCreator {
         ScaleTransition transition = new ScaleTransition(Duration.seconds(3), point);
         transition.setCycleCount(Animation.INDEFINITE);
         transition.setAutoReverse(true);
-        transition.setToX(0.5);
-        transition.setToY(0.5);
+        transition.setToX(2.2);
+        transition.setToY(2.2);
 
         clicked.addListener((p, o, n) ->{
             point.setVisible(p.getValue());
@@ -169,17 +173,18 @@ class MapViewCreator {
         return point;
     }
 
-    private static Rectangle bigRec(Route route, ReadOnlyObjectProperty<Trail> trailProp){
-        Rectangle big = new Rectangle(36, 12);
-        big.getStyleClass().add("trail");
-        big.setVisible(false);
+    private static Rectangle bigRec(Route route, ReadOnlyObjectProperty<List<Route>> trailProp){
+        Rectangle border = new Rectangle(36, 12);
+        border.setVisible(false);
+        border.setFill(Color.TRANSPARENT);
+        border.setStroke(Color.WHITE);
+        border.setStrokeWidth(4);
 
-        trailProp.addListener((p,o,n)->{
-            if(n.getRoutes().contains(route)){
-                big.setVisible(true);
+        trailProp.addListener((p,o,n) ->{
+            if(n.contains(route)){
+                border.setVisible(true);
             }
         });
-
-        return big;
+        return border;
     }
 }

@@ -40,7 +40,8 @@ public class ObservableGameState {
     private final List<BooleanProperty> routesPossibleClaim = new ArrayList<>();
 
     private final List<BooleanProperty> clickedStations = new ArrayList<>();
-    private static SimpleObjectProperty<Trail> longuestTrail;
+    private static SimpleObjectProperty<List<Route>> longuestTrailP1;
+    private static SimpleObjectProperty<List<Route>> longuestTrailP2;
 
 
     public ObservableGameState(PlayerId ownId){
@@ -79,7 +80,8 @@ public class ObservableGameState {
             clickedStations.add(new SimpleBooleanProperty(false));
         }
 
-        longuestTrail = new SimpleObjectProperty<>();
+        longuestTrailP1 = new SimpleObjectProperty<>();
+        longuestTrailP2 = new SimpleObjectProperty<>();
     }
 
     /**
@@ -233,18 +235,30 @@ public class ObservableGameState {
     public ReadOnlyBooleanProperty getClickedStations(Station station){ return clickedStations.get(ChMap.stations().indexOf(station)); }
 
     /**
-     *
      * @param station recherchée dans le billet
      * @param value boolean pour savoir si il est cliqué
      */
     public void setClickedStations(Station station, boolean value){ clickedStations.get(ChMap.stations().indexOf(station)).set(value); }
 
-    public ReadOnlyObjectProperty<Trail> getLonguestTrailProperty (){
-        return longuestTrail;
+    /**
+     * @return (ReadOnlyObjectProperty<List<Route>>) : la propriété correspondant au chemin le plus long
+     */
+    public ReadOnlyObjectProperty<List<Route>> getLonguestTrailP1Property (){
+        return longuestTrailP1;
     }
 
-    public static void setLonguestTrail(Trail longuest){
-        longuestTrail.set(longuest);
+    public ReadOnlyObjectProperty<List<Route>> getLonguestTrailP2Property (){
+        return longuestTrailP2;
+    }
+
+    /**
+     *
+     * @param longestP1 (List<Route>)
+     * @param longestP2 (List<Route>)
+     */
+    public static void setLonguestTrail(List<Route> longestP1, List<Route> longestP2){
+        longuestTrailP1.set(longestP1);
+        longuestTrailP2.set(longestP2);
     }
 
     /**

@@ -5,10 +5,7 @@ import ch.epfl.tchu.game.*;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import static java.nio.charset.StandardCharsets.US_ASCII;
@@ -125,6 +122,11 @@ public final class RemotePlayerClient {
                         String song = SERDE_STRING.deserialize(received.get(1));
                         int loop = SERDE_INT.deserialize(received.get(2));
                         player.playSong(song, loop);
+                        break;
+                    case LONGEST:
+                        List<Route> routesP1 = SERDE_LIST_ROUTE.deserialize(received.get(1));
+                        List<Route> routesP2 = SERDE_LIST_ROUTE.deserialize(received.get(2));
+                        player.longest(routesP1, routesP2);
                         break;
                 }
             }

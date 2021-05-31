@@ -90,6 +90,12 @@ public final class RemotePlayerProxy implements Player {
         sendInfo(SONG, listInfos);
     }
 
+    @Override
+    public void longest(List<Route> routesP1, List<Route> routesP2) {
+        List<String> listInfos = List.of(SERDE_LIST_ROUTE.serialize(routesP1), SERDE_LIST_ROUTE.serialize(routesP2));
+        sendInfo(LONGEST, listInfos);
+    }
+
 
     /**
      * Méthode pour créer les messages à partir du MessageId et d'une liste

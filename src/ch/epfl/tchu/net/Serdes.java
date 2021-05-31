@@ -56,6 +56,21 @@ public final class Serdes {
 
     public static final Serde<List<SortedBag<Card>>> SERDE_LIST_OF_SORTED_BAG_CARD = Serde.listOf(SERDE_SORTED_BAG_CARD, PV_SEPARATOR);
 
+    /*public static final Serde<Trail> SERDE_TRAIL = Serde.of(
+            (Trail trail) -> String.join(PV_SEPARATOR, List.of(SERDE_LIST_ROUTE.serialize(trail.getRoutes()),
+                    SERDE_INT.serialize(trail.station1().id()), SERDE_STRING.serialize(trail.station1().name()),
+                    SERDE_INT.serialize(trail.station2().id()), SERDE_STRING.serialize(trail.station2().name()))),
+            (String serialized) ->{
+                List<String> tabs = Arrays.asList(serialized.split(Pattern.quote(PV_SEPARATOR),-1));
+
+                List<Route> trailRoutes = SERDE_LIST_ROUTE.deserialize(tabs.get(0));
+                Station from = new Station(SERDE_INT.deserialize(tabs.get(1)), SERDE_STRING.deserialize(tabs.get(2)));
+                Station to = new Station(SERDE_INT.deserialize(tabs.get(3)), SERDE_STRING.deserialize(tabs.get(4)));
+
+                return new Trail(trailRoutes, from, to);
+            }
+    );*/
+
     /**
      * Le serde associée au PublicCardState
      */

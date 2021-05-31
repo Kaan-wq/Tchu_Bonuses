@@ -26,7 +26,7 @@ public class InitialMenuCreator {
 
         menu.initModality(Modality.WINDOW_MODAL);
         menu.initOwner(parent);
-        menu.setTitle("Bienvenus à TcHu");
+        menu.setTitle("Bienvenu à TcHu");
         menu.setOnCloseRequest(Event::consume);
 
 
@@ -57,12 +57,7 @@ public class InitialMenuCreator {
         VBox r = new VBox();
 
         // rajouter les éléments
-        r.getChildren().add(logo);
-        r.getChildren().add(textFlow);
-        r.getChildren().add(playerName);
-        r.getChildren().add(playerName2);
-        r.getChildren().add(button);
-        r.getChildren().add(regles);
+        r.getChildren().addAll(logo, textFlow, playerName, playerName2, button, regles);
 
         // faire la scene qui les affichera
         Scene sc = new Scene(r, 400, 400);

@@ -9,7 +9,6 @@ import ch.epfl.tchu.Preconditions;
 import ch.epfl.tchu.SortedBag;
 import ch.epfl.tchu.game.Route.Level;
 import ch.epfl.tchu.gui.Info;
-import ch.epfl.tchu.gui.ObservableGameState;
 
 import javax.sound.sampled.Clip;
 
@@ -44,6 +43,8 @@ public final class Game {
             info.put(id, new Info(playerNames.get(id)));
         });
 
+        players.forEach((id, player) -> player.playSong("sounds/Musique_fond.wav", Clip.LOOP_CONTINUOUSLY));
+
         //info du premier joueur.
         sendInfo(players, info.get(jeu.currentPlayerId()).willPlayFirst());
 
@@ -66,8 +67,6 @@ public final class Game {
         //boucle d'itération pour les tours des joueurs
 
         boolean endGame = true;
-
-        players.forEach((id, player) -> player.playSong("sounds/Musique_fond.wav", Clip.LOOP_CONTINUOUSLY));
 
         while(endGame){
             updateGraphics(players, jeu);
@@ -209,6 +208,7 @@ public final class Game {
 
             if(jeu.lastPlayer() == jeu.currentPlayerId()){
                 endGame = false;
+                players.forEach((id, player) -> player.playSong("sounds/Musique_fond.wav", 1));
             }
 
             if(jeu.lastTurnBegins()){
@@ -236,26 +236,31 @@ public final class Game {
         int lengthMaxOne = Trail.longest(jeu.currentPlayerState().routes()).length();
         int lengthMaxTwo = Trail.longest(jeu.playerState(jeu.currentPlayerId().next()).routes()).length();
 
+        List<Route> longestP1 = Trail.longest(jeu.currentPlayerState().routes()).getRoutes();
+        List<Route> longestP2 = Trail.longest(jeu.playerState(jeu.currentPlayerId().next()).routes()).getRoutes();
+
         if(lengthMaxOne == lengthMaxTwo){
             playerPointsOne += Constants.LONGEST_TRAIL_BONUS_POINTS;
             playerPointsTwo += Constants.LONGEST_TRAIL_BONUS_POINTS;
 
             sendInfo(players, info.get(jeu.currentPlayerId()).getsLongestTrailBonus(Trail.longest(jeu.currentPlayerState().routes())));
             sendInfo(players, info.get(jeu.currentPlayerId().next()).getsLongestTrailBonus(Trail.longest(jeu.playerState(jeu.currentPlayerId().next()).routes())));
-            ObservableGameState.setLonguestTrail(Trail.longest(jeu.currentPlayerState().routes()));
+
+            players.forEach((id, player) -> player.longest(longestP1, longestP2));
 
         }else if(lengthMaxOne > lengthMaxTwo){
             playerPointsOne += Constants.LONGEST_TRAIL_BONUS_POINTS;
 
             sendInfo(players, info.get(jeu.currentPlayerId()).getsLongestTrailBonus(Trail.longest(jeu.currentPlayerState().routes())));
-            ObservableGameState.setLonguestTrail(Trail.longest(jeu.currentPlayerState().routes()));
 
+            players.forEach((id, player) -> player.longest(longestP1, List.of()));
 
         }else{
             playerPointsTwo += Constants.LONGEST_TRAIL_BONUS_POINTS;
 
             sendInfo(players, info.get(jeu.currentPlayerId().next()).getsLongestTrailBonus(Trail.longest(jeu.playerState(jeu.currentPlayerId().next()).routes())));
-            ObservableGameState.setLonguestTrail(Trail.longest(jeu.playerState(jeu.currentPlayerId().next()).routes()));
+
+            players.forEach((id, player) -> player.longest(List.of(), longestP2));
         }
 
 

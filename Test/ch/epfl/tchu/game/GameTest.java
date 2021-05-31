@@ -433,6 +433,11 @@ class GameTest {
         public void playSong(String song, int loop) {
 
         }
+
+        @Override
+        public void longest(List<Route> routesP1, List<Route> routesP2) {
+
+        }
     }
 
     // Simplified Swiss map (only single routes)
