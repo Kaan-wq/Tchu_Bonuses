@@ -26,6 +26,11 @@ import javafx.util.Duration;
  */
 
 class MapViewCreator {
+
+    private static final int ROUTE_WIDTH = 36;
+    private static final int ROUTE_HEIGHT = 12;
+    private static final int CIRCLE_ROUTE_RADIUS = 3;
+
     /**
      * Constructeur privé pour éviter le constructeur par défaut et rendre la classe non instanciable.
      */
@@ -33,6 +38,10 @@ class MapViewCreator {
 
     @FunctionalInterface
     public interface CardChooser {
+        /**
+         * @param options (List<SortedBag<Card>>) : combinaisons de cartes parmi lesquelles il faut faire un choix
+         * @param chooseHandler (ChooseCardsHandler) : handler asociée au choix des cartes
+         */
        void chooseCards(List<SortedBag<Card>> options, ChooseCardsHandler chooseHandler);
     }
 
@@ -49,8 +58,7 @@ class MapViewCreator {
         ImageView map = new ImageView("map.png");
 
         Pane home = new Pane(map);
-        home.getStylesheets().add("map.css");
-        home.getStylesheets().add("colors.css");
+        home.getStylesheets().addAll("map.css", "colors.css");
 
         for(Route route : ChMap.routes()){
             home.getChildren().add(makeGroupOfRoute(route, jeu, routeHandler, select));
@@ -124,30 +132,29 @@ class MapViewCreator {
     }
 
     /**
-     * @return une voie avec les styles complets
+     * @return (Rectangle) : une voie avec les styles complets
      */
     private static Rectangle makeVoie(){
 
-        Rectangle voie = new Rectangle(36, 12);
+        Rectangle voie = new Rectangle(ROUTE_WIDTH, ROUTE_HEIGHT);
         voie.getStyleClass().addAll("track", "filled");
 
         return voie;
     }
 
     /**
-     * @return wagon avec cercles et styles complets
+     * @return (Group) : wagon avec cercles et styles complets
      */
     private static Group makeWagon(){
 
-        Rectangle rectangle = new Rectangle(36, 12);
+        Rectangle rectangle = new Rectangle(ROUTE_WIDTH, ROUTE_HEIGHT);
         rectangle.getStyleClass().add("filled");
 
-        Circle circleOne = new Circle(12, 6, 3);
-        Circle circleTwo = new Circle(24, 6, 3);
+        Circle circleOne = new Circle(ROUTE_WIDTH /3, ROUTE_HEIGHT /2, CIRCLE_ROUTE_RADIUS);
+        Circle circleTwo = new Circle(ROUTE_WIDTH * 2/3, ROUTE_HEIGHT /2, CIRCLE_ROUTE_RADIUS);
 
         Group wagon = new Group(rectangle, circleOne, circleTwo);
         wagon.getStyleClass().add("car");
-
 
         return wagon;
     }

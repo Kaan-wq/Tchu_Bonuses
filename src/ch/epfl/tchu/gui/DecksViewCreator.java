@@ -20,31 +20,46 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+import static ch.epfl.tchu.game.Constants.DECK_SLOT;
+import static ch.epfl.tchu.gui.StringsFr.CARDS;
+import static ch.epfl.tchu.gui.StringsFr.TICKETS;
+
 /**
  * @author Kaan Ucar (324467)
  * @author Félix Rodriguez Moya (325162)
  */
 
 class DecksViewCreator {
+    private static final int BUTTON_WIDTH = 50;
+    private static final int BUTTON_HEIGHT = 5;
+
+    private static final int LOC_AND_IN_WIDTH = 40;
+    private static final int LOC_AND_IN_HEIGHT = 70;
+
+    private static final int OUT_WIDTH = 60;
+    private static final int OUT_HEIGHT = 90;
+
+    /**
+     * Constructeur privé pour rendre la classe non instanciable
+     */
     private DecksViewCreator(){}
 
     /**
-     * Méthode pour faire l'nterface visible des cartes de la main du joueur
+     * Méthode pour faire l'interface visible des cartes de la main du joueur
      *
-     * @param observableState (ObservableGameState)
+     * @param observableState (ObservableGameState) état observable du jeu
      * @return (Node) : le graphe de scène des cartes de la main du joueur
      */
     public static Node createHandView(ObservableGameState observableState){
 
         ObservableList<Ticket> tickets = observableState.getListBillets();
-        ListView<Ticket> listView = new ListView(tickets);
+        ListView<Ticket> listView = new ListView<>(tickets);
+        listView.setId("tickets");
 
         listView.getSelectionModel().selectedItemProperty().addListener((p, o, n) ->{
             if(o != null){o.getStations().forEach(s -> observableState.setClickedStations(s, false)); }
             n.getStations().forEach(s -> observableState.setClickedStations(s, true));
         });
-
-        listView.setId("tickets");
 
         HBox littleBox = new HBox();
         littleBox.setId("hand-pane");
@@ -75,13 +90,13 @@ class DecksViewCreator {
         vBox.getStylesheets().addAll("decks.css", "colors.css");
         vBox.setId("card-pane");
 
-        Button buttonTickets = makeButton(observableState.getRemainingTickets(), "Billets");
+        Button buttonTickets = makeButton(observableState.getRemainingTickets(), TICKETS);
         buttonTickets.disableProperty().bind(ticketsHandler.isNull());
         buttonTickets.setOnMouseClicked(e -> ticketsHandler.get().onDrawTickets());
 
-        Button buttonCards = makeButton(observableState.getRemainingCards(), "Cards");
+        Button buttonCards = makeButton(observableState.getRemainingCards(), CARDS);
         buttonCards.disableProperty().bind(cardHandler.isNull());
-        buttonCards.setOnMouseClicked(e -> cardHandler.get().onDrawCard(-1));
+        buttonCards.setOnMouseClicked(e -> cardHandler.get().onDrawCard(DECK_SLOT));
 
         vBox.getChildren().add(buttonTickets);
 
@@ -155,11 +170,11 @@ class DecksViewCreator {
         Button button = new Button(string);
         button.getStyleClass().add("gauged");
 
-        Rectangle foreground = new Rectangle(50, 5);
+        Rectangle foreground = new Rectangle(BUTTON_WIDTH, BUTTON_HEIGHT);
         foreground.getStyleClass().add("foreground");
         foreground.widthProperty().bind(property.multiply(50).divide(100));
 
-        Rectangle background = new Rectangle(50,5);
+        Rectangle background = new Rectangle(BUTTON_WIDTH,BUTTON_HEIGHT);
         background.getStyleClass().add("background");
 
         Group group = new Group(background, foreground);
@@ -167,14 +182,17 @@ class DecksViewCreator {
         return button;
     }
 
+    /**
+     * @return (StackPane) : une visualisation d'une carte
+     */
     private static StackPane makeRectangles(){
-        Rectangle outside = new Rectangle(60, 90);
+        Rectangle outside = new Rectangle(OUT_WIDTH, OUT_HEIGHT);
         outside.getStyleClass().add("outside");
 
-        Rectangle inside = new Rectangle(40, 70);
+        Rectangle inside = new Rectangle(LOC_AND_IN_WIDTH, LOC_AND_IN_HEIGHT);
         inside.getStyleClass().addAll("inside", "filled");
 
-        Rectangle wagLoc = new Rectangle(40, 70);
+        Rectangle wagLoc = new Rectangle(LOC_AND_IN_WIDTH, LOC_AND_IN_HEIGHT);
         wagLoc.getStyleClass().add("train-image");
 
         return new StackPane(outside, inside, wagLoc);
