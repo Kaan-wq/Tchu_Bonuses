@@ -17,6 +17,9 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import ch.epfl.tchu.gui.ActionHandlers.*;
 import javafx.util.Duration;
 
@@ -175,6 +178,9 @@ class MapViewCreator {
         clicked.addListener((p, o, n) ->{
             point.setVisible(p.getValue());
             transition.play();
+
+            Timer timer = new Timer();
+            timer.schedule(new TicketsAnim(point), 12000);
         });
 
         return point;
@@ -193,5 +199,14 @@ class MapViewCreator {
             }
         });
         return border;
+    }
+
+    private static final class TicketsAnim extends TimerTask {
+        private final Circle node;
+
+        private TicketsAnim(Circle node){ this.node = node; }
+
+        @Override
+        public void run() { node.setVisible(false); }
     }
 }

@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 
 public final class SoundMaker {
-    public static final int STOP = 1;
 
     private SoundMaker(){}
 
@@ -27,8 +26,8 @@ public final class SoundMaker {
 
     /**
      * Möthode pour créer un son
-     * @param song
-     * @return
+     * @param song (String) : le son en question
+     * @return (Clip) : le clip associé au son
      */
     public static Clip makeSound(String song){
         try{
