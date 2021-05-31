@@ -163,7 +163,7 @@ class MapViewCreator {
     }
 
     private static Circle makeGroupTickets(Station station, ReadOnlyBooleanProperty clicked){
-        Circle point = new Circle(6, Paint.valueOf("RED"));
+        Circle point = new Circle(6, Paint.valueOf("CRIMSON"));
         point.setId(String.valueOf(station.id()));
         point.getStyleClass().addAll("station", "filled");
         point.setVisible(false);
