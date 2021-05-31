@@ -1,12 +1,12 @@
 package ch.epfl.tchu.gui;
 
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Node;
+
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,7 +15,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
-import javafx.stage.Popup;
+
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -27,7 +27,6 @@ public class InitialMenuCreator {
         menu.initModality(Modality.WINDOW_MODAL);
         menu.initOwner(parent);
         menu.setTitle("Bienvenu à TcHu");
-        menu.setOnCloseRequest(Event::consume);
 
 
         ImageView logo = new ImageView(new Image("logoTcHu.jpg"));
@@ -70,6 +69,8 @@ public class InitialMenuCreator {
             }else{
                 ClientMain.startGameClient(playerName.getText(), playerName2.getText());
             }
+            Platform.setImplicitExit(false);
+            menu.hide();
 
         });
 
