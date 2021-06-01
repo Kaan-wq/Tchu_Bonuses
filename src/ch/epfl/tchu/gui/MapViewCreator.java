@@ -1,8 +1,14 @@
 package ch.epfl.tchu.gui;
 
 import ch.epfl.tchu.SortedBag;
-import ch.epfl.tchu.game.*;
+import ch.epfl.tchu.game.Card;
+import ch.epfl.tchu.game.ChMap;
+import ch.epfl.tchu.game.Route;
+import ch.epfl.tchu.game.Station;
+import ch.epfl.tchu.gui.ActionHandlers.ChooseCardsHandler;
+import ch.epfl.tchu.gui.ActionHandlers.ClaimRouteHandler;
 import javafx.animation.Animation;
+import javafx.animation.PauseTransition;
 import javafx.animation.ScaleTransition;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
@@ -15,13 +21,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import ch.epfl.tchu.gui.ActionHandlers.*;
-import javafx.util.Duration;
 
 /**
  * @author Kaan Ucar (324467)
@@ -175,19 +177,24 @@ class MapViewCreator {
         transition.setToX(2.2);
         transition.setToY(2.2);
 
+        PauseTransition pause = new PauseTransition(new Duration(12000));
+
+        pause.setOnFinished((e) -> {
+            transition.pause();
+            point.setVisible(false);
+        });
+
         clicked.addListener((p, o, n) ->{
             point.setVisible(p.getValue());
             transition.play();
-
-            Timer timer = new Timer();
-            timer.schedule(new TicketsAnim(point), 12000);
+            pause.play();
         });
 
         return point;
     }
 
     private static Rectangle bigRec(Route route, ReadOnlyObjectProperty<List<Route>> trailProp){
-        Rectangle border = new Rectangle(36, 12);
+        Rectangle border = new Rectangle(ROUTE_WIDTH, ROUTE_HEIGHT);
         border.setVisible(false);
         border.setFill(Color.TRANSPARENT);
         border.setStroke(Color.WHITE);
@@ -199,14 +206,5 @@ class MapViewCreator {
             }
         });
         return border;
-    }
-
-    private static final class TicketsAnim extends TimerTask {
-        private final Circle node;
-
-        private TicketsAnim(Circle node){ this.node = node; }
-
-        @Override
-        public void run() { node.setVisible(false); }
     }
 }
