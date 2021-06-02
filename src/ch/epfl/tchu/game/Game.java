@@ -1,16 +1,14 @@
 package ch.epfl.tchu.game;
 
-import java.util.List;
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.Random;
-
 import ch.epfl.tchu.Preconditions;
 import ch.epfl.tchu.SortedBag;
 import ch.epfl.tchu.game.Route.Level;
 import ch.epfl.tchu.gui.Info;
 
-import javax.sound.sampled.Clip;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 /**
  * @author Kaan Ucar (324467)
@@ -43,7 +41,7 @@ public final class Game {
             info.put(id, new Info(playerNames.get(id)));
         });
 
-        players.forEach((id, player) -> player.playSong("sounds/Musique_fond.wav", Clip.LOOP_CONTINUOUSLY));
+        players.forEach((id, player) -> player.playSong("sounds/Musique_fond.wav", 5));
 
         //info du premier joueur.
         sendInfo(players, info.get(jeu.currentPlayerId()).willPlayFirst());
@@ -208,7 +206,6 @@ public final class Game {
 
             if(jeu.lastPlayer() == jeu.currentPlayerId()){
                 endGame = false;
-                players.forEach((id, player) -> player.playSong("sounds/Musique_fond.wav", 1));
             }
 
             if(jeu.lastTurnBegins()){

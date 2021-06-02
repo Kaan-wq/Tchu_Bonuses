@@ -84,8 +84,6 @@ class RemotePlayerClientTest {
         }
 
         @Override
-        public void longest(List<Route> routesP1, List<Route> routesP2) {
-
-        }
+        public void longest(List<Route> routesP1, List<Route> routesP2) { }
     }
 }

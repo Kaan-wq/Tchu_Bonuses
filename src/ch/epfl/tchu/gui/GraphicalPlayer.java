@@ -25,15 +25,13 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.StringConverter;
 
+import javax.naming.NamingSecurityException;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static ch.epfl.tchu.game.Constants.DISCARDABLE_TICKETS_COUNT;
-import static ch.epfl.tchu.game.Constants.MAX_MESSAGES;
-import static ch.epfl.tchu.gui.StringsFr.*;
 import static javafx.application.Platform.isFxApplicationThread;
 
 /**
@@ -60,13 +58,15 @@ public final class GraphicalPlayer {
      * @param playerNames (Map<PlayerId, String>) : map des noms des joueurs
      */
     public GraphicalPlayer(PlayerId ownId, Map<PlayerId, String> playerNames){
-        assert (isFxApplicationThread());
+        if (! isFxApplicationThread()) throw new AssertionError(); // assert
 
         jeu = new ObservableGameState(ownId);
         listText = FXCollections.observableList(new ArrayList<>());
 
+
         screen = new Stage();
-        screen.setTitle(String.join(" ", List.of("tCHu", "\u2014", playerNames.get(ownId))));
+        screen.setTitle(String.join(" ", List.of("tCHu","\u2014", playerNames.get(ownId))));
+        screen.initOwner(null);
 
         Node mapView = MapViewCreator.createMapView(jeu, routesHandlerProperty, this::chooseClaimCards);
         Node cardsView = DecksViewCreator.createCardsView(jeu, ticketsHandlerProperty, cardsHandlerProperty);
@@ -86,7 +86,7 @@ public final class GraphicalPlayer {
      * @param ownState (PlayerState) : état du joueur
      */
     public void setState(PublicGameState newGameState, PlayerState ownState){
-        assert (isFxApplicationThread());
+        if (! isFxApplicationThread()) throw new AssertionError();
 
         jeu.setState(newGameState,ownState);
     }
@@ -96,12 +96,13 @@ public final class GraphicalPlayer {
      * @param message message à rajouter à la liste d'informations de la partie
      */
     public void receiveInfo(String message){
-        assert (isFxApplicationThread());
+        if (! isFxApplicationThread()) throw new AssertionError();
 
         Text textToAdd = new Text(message);
         listText.add(textToAdd);
-
-        if(listText.size() > MAX_MESSAGES) { listText.remove(0); }
+        if(listText.size() > 5) {
+            listText.remove(0);
+        }
     }
 
     /**
@@ -112,7 +113,7 @@ public final class GraphicalPlayer {
      * @param ticketsHandler gestionnaires du tirage de billets
      */
     public void startTurn(DrawTicketsHandler ticketsHandler, DrawCardHandler cardHandler, ClaimRouteHandler routeHandler){
-        assert (isFxApplicationThread());
+        if (! isFxApplicationThread()) throw new AssertionError();
 
         if(jeu.canDrawCards()){
             cardsHandlerProperty.set(e ->{
@@ -137,12 +138,11 @@ public final class GraphicalPlayer {
 
     /**
      * Ouvre fenêtre de visualisation pour choix d'une quantité variable de billets.
-     *
      * @param ticketChoices (SortedBag<Ticket>) : la pannel des billets
      * @param ticketsChooser (ChooseTicketsHandler)
      */
     public void chooseTickets(SortedBag<Ticket> ticketChoices, ChooseTicketsHandler ticketsChooser){
-        assert (isFxApplicationThread());
+        if (! isFxApplicationThread()) throw new AssertionError();
 
         makePopUpTickets(ticketChoices, screen, ticketsChooser);
     }
@@ -153,7 +153,7 @@ public final class GraphicalPlayer {
      * @param cardHandler (DrawCardHandler)
      */
     public void drawCard(DrawCardHandler cardHandler){
-        assert (isFxApplicationThread());
+        if (! isFxApplicationThread()) throw new AssertionError();
 
         cardsHandlerProperty.set((e) -> {
             cardHandler.onDrawCard(e);
@@ -168,21 +168,20 @@ public final class GraphicalPlayer {
      * @param chooseCardsHandler (ChooseCardsHandler)
      */
     public void chooseClaimCards(List<SortedBag<Card>> possibilities , ChooseCardsHandler chooseCardsHandler){
-        assert (isFxApplicationThread());
+        assert(isFxApplicationThread());
 
-        makePopUpCards(possibilities, CHOOSE_CARDS, screen, chooseCardsHandler);
+        makePopUpCards(possibilities, StringsFr.CHOOSE_CARDS, screen, chooseCardsHandler);
     }
 
     /**
      * Ouvre fenêtre de visualisation pour choix d'une des options de cartes additionelles pour construire une route
-     *
      * @param possibilities (List<SortedBag<Card>>) : liste de possibilités de choix de cartes supplémentaire pour construire une route.
      * @param chooseCardsHandler (ChooseCardsHandler)
      */
     public void chooseAdditionalCards(List<SortedBag<Card>> possibilities , ChooseCardsHandler chooseCardsHandler){
-        assert (isFxApplicationThread());
+        if (! isFxApplicationThread()) throw new AssertionError();
 
-        makePopUpCards(possibilities, CHOOSE_ADDITIONAL_CARDS, screen, chooseCardsHandler);
+        makePopUpCards(possibilities, StringsFr.CHOOSE_ADDITIONAL_CARDS, screen, chooseCardsHandler);
     }
 
     /**
@@ -193,7 +192,7 @@ public final class GraphicalPlayer {
     public void playSong(String song, int loop){
         if (! isFxApplicationThread()) throw new AssertionError();
 
-        if(loop == Clip.LOOP_CONTINUOUSLY){
+        if(loop == 5){
 
             FloatControl controlSound = (FloatControl) this.foreSound.getControl(FloatControl.Type.MASTER_GAIN);
             controlSound.setValue(-20.f);
@@ -205,11 +204,6 @@ public final class GraphicalPlayer {
         }else{ SoundMaker.playSound(song, loop); }
     }
 
-    /**
-     * Set le longest
-     * @param routesP1 (List<Route>)
-     * @param routesP2 (List<Route>)
-     */
     public void longest(List<Route> routesP1, List<Route> routesP2){
         assert(isFxApplicationThread());
 
@@ -224,27 +218,38 @@ public final class GraphicalPlayer {
      * @param ticketsHandler (ChooseTicketsHandler)
      */
     private void makePopUpTickets(SortedBag<Ticket> tickets, Stage screen, ChooseTicketsHandler ticketsHandler){
+        String titre = StringsFr.TICKETS_CHOICE;
+        String introText = StringsFr.CHOOSE_TICKETS;
 
-        Stage popUp = makePopBasic(screen, TICKETS_CHOICE);
+        Stage popUp = new Stage(StageStyle.UTILITY);
+        popUp.initOwner(screen);
+        popUp.initModality(Modality.WINDOW_MODAL);
+        popUp.setTitle(titre);
+        popUp.setOnCloseRequest(Event::consume);
 
-        Button button = new Button(CHOOSE);
+        Button button = new Button("Choisir");
 
-        ListView<Ticket> listView = new ListView<>(FXCollections.observableList(tickets.toList()));
-        BooleanBinding checkSelection = Bindings.greaterThan(tickets.size() - DISCARDABLE_TICKETS_COUNT, Bindings.size(listView.getSelectionModel().getSelectedItems()));
+        ListView<Ticket> listView = new ListView(FXCollections.observableList(tickets.toList()));
+        BooleanBinding checkSelection = Bindings.greaterThan(tickets.size() - 2, Bindings.size(listView.getSelectionModel().getSelectedItems()));
         button.disableProperty().bind(checkSelection);
 
         //choix multiple pour les billets
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        Text text = new Text(String.format(CHOOSE_TICKETS, tickets.size() - DISCARDABLE_TICKETS_COUNT, plural(tickets.size())));
+        Text text = new Text(String.format(introText, tickets.size()-2, StringsFr.plural(tickets.size())));
         TextFlow textFlow = new TextFlow(text);
 
-        button.setOnAction(event ->{
+        button.setOnAction(event -> {
             popUp.hide();
             ticketsHandler.onChooseTickets(SortedBag.of(listView.getSelectionModel().getSelectedItems()));
         });
 
-        makeFinalShow(popUp, textFlow, listView, button);
+        VBox box = new VBox(textFlow, listView, button);
+        Scene scenePopUp = new Scene(box);
+        scenePopUp.getStylesheets().add("chooser.css");
+
+        popUp.setScene(scenePopUp);
+        popUp.show();
     }
 
     /**
@@ -259,89 +264,34 @@ public final class GraphicalPlayer {
     private void makePopUpCards(List<SortedBag<Card>> cards , String introText ,Stage screen,
                                 ChooseCardsHandler chooseCardsHandler){
 
-        Stage popUp = makePopBasic(screen, CARDS_CHOICE);
+        String titre = StringsFr.CARDS_CHOICE;
+        Stage popUp = new Stage(StageStyle.UTILITY);
+        popUp.initOwner(screen);
+        popUp.initModality(Modality.WINDOW_MODAL);
+        popUp.setTitle(titre);
+        popUp.setOnCloseRequest(Event::consume);
 
-        Button button = new Button(CHOOSE);
+
+        Button button = new Button("Choisir");
 
         Text text = new Text(introText);
         TextFlow textFlow = new TextFlow(text);
 
-        ListView<SortedBag<Card>> listView = new ListView<>(FXCollections.observableList(cards));
+        ListView<SortedBag<Card>> listView = new ListView(FXCollections.observableList(cards));
 
         listView.setCellFactory(v -> new TextFieldListCell<>(new CardBagStringConverter()));
 
-        if(introText.equals(CHOOSE_CARDS)){
+        if(introText.equals(StringsFr.CHOOSE_CARDS)){
             BooleanBinding checkSelection = listView.getSelectionModel().selectedItemProperty().isNull();
             button.disableProperty().bind(checkSelection);
         }
 
-        button.setOnAction(event ->{
+        button.setOnAction(event -> {
             popUp.hide();
             SortedBag<Card> choice = listView.getSelectionModel().getSelectedItem() == null ? SortedBag.of() : listView.getSelectionModel().getSelectedItem();
             chooseCardsHandler.onChooseCards(choice);
         });
 
-        makeFinalShow(popUp,textFlow,listView,button);
-    }
-
-    /**
-     * Convertisseur de la représentation textuelle des cartes au moyen de la redéfinition de toString()
-     */
-    public static final class CardBagStringConverter extends StringConverter<SortedBag<Card>> {
-
-        /**
-         * @param object (SortedBag<Card>) : l'object dont on souhaite redéfinir la représentation textuelle
-         * @return (String) : la représentation textuelle de l'object désiré
-         */
-        @Override
-        public String toString(SortedBag<Card> object) {
-            return Info.cardText(object);
-        }
-
-        /**
-         * @param string (String) : pas utilisée dans ce cas
-         * @return rien
-         * @throws UnsupportedOperationException : throw cette erreure car cette méthode n'est pas censée être utilisée
-         */
-        @Override
-        public SortedBag<Card> fromString(String string) throws UnsupportedOperationException{
-            throw new UnsupportedOperationException();
-        }
-    }
-
-    /**
-     * Méthode qui met les propriétés suivantes à null
-     */
-    private void setAllNull(){
-        cardsHandlerProperty.set(null);
-        ticketsHandlerProperty.set(null);
-        routesHandlerProperty.set(null);
-    }
-
-    /**
-     *Initialisation de la fenetre du popUp
-     *
-     * @param parent owner de la nouvelle fenetre
-     * @return stage initialisé et configuré
-     */
-    private Stage makePopBasic(Stage parent, String title){
-        Stage popUp = new Stage(StageStyle.UTILITY);
-        popUp.initOwner(parent);
-        popUp.initModality(Modality.WINDOW_MODAL);
-        popUp.setTitle(title);
-        popUp.setOnCloseRequest(Event::consume);
-        return popUp;
-    }
-
-    /**
-     * Affichage final du popUp avec tous les éléments nécéssaire
-     *
-     * @param popUp fenetre de l'affichage
-     * @param textFlow texte de la fenetre
-     * @param listView listes avec les éléments à afficher
-     * @param button bouton pour confirmer le choix parmi la liste
-     */
-    private <T> void makeFinalShow (Stage popUp, TextFlow textFlow, ListView<T> listView, Button button){
         VBox box = new VBox(textFlow, listView, button);
         Scene scenePopUp = new Scene(box);
         scenePopUp.getStylesheets().add("chooser.css");
@@ -350,5 +300,24 @@ public final class GraphicalPlayer {
         popUp.show();
     }
 
+    public static class CardBagStringConverter extends StringConverter<SortedBag<Card>> {
+        @Override
+        public String toString(SortedBag<Card> object) {
+            return Info.cardText(object);
+        }
 
+        @Override
+        public SortedBag<Card> fromString(String string) throws UnsupportedOperationException{
+            throw new UnsupportedOperationException();
+        }
+    }
+
+    /**
+     * Methode utilisée pour mettre à "null" les propriétés suivantes
+     */
+    private void setAllNull(){
+        cardsHandlerProperty.set(null);
+        ticketsHandlerProperty.set(null);
+        routesHandlerProperty.set(null);
+    }
 }

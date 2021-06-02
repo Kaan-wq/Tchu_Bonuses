@@ -112,5 +112,10 @@ public interface Player {
      */
     void playSong(String song, int loop);
 
+    /**
+     * Longest
+     * @param routesP1 (List<Route>)
+     * @param routesP2 (List<Route>)
+     */
     void longest(List<Route> routesP1, List<Route> routesP2);
 }

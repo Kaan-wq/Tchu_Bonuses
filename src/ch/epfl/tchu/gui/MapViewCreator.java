@@ -123,8 +123,8 @@ class MapViewCreator {
         for (int i = 0 ; i < route.length(); ++i){
             //initialiser le groupe de la partie de route
             Group subGroupRoute = new Group(makeVoie(), makeWagon(),
-                    bigRec(route, jeu.getLonguestTrailP1Property()),
-                    bigRec(route, jeu.getLonguestTrailP2Property()));
+                    bigRec(route, jeu.getLonguestTrailP1Property(), "#FEFCFC"),
+                    bigRec(route, jeu.getLonguestTrailP2Property(), "#030303"));
 
             String lengthValue = String.valueOf(i + 1);
             String newId = route.id() + "_" + lengthValue;
@@ -193,11 +193,11 @@ class MapViewCreator {
         return point;
     }
 
-    private static Rectangle bigRec(Route route, ReadOnlyObjectProperty<List<Route>> trailProp){
+    private static Rectangle bigRec(Route route, ReadOnlyObjectProperty<List<Route>> trailProp, String color){
         Rectangle border = new Rectangle(ROUTE_WIDTH, ROUTE_HEIGHT);
         border.setVisible(false);
         border.setFill(Color.TRANSPARENT);
-        border.setStroke(Color.WHITE);
+        border.setStroke(Color.web(color));
         border.setStrokeWidth(4);
 
         trailProp.addListener((p,o,n) ->{

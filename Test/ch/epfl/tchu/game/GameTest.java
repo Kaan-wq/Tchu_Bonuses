@@ -436,7 +436,6 @@ class GameTest {
 
         @Override
         public void longest(List<Route> routesP1, List<Route> routesP2) {
-
         }
     }
 

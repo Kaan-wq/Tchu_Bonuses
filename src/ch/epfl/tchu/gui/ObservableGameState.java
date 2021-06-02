@@ -40,8 +40,9 @@ public class ObservableGameState {
     private final List<BooleanProperty> routesPossibleClaim = new ArrayList<>();
 
     private final List<BooleanProperty> clickedStations = new ArrayList<>();
-    private static SimpleObjectProperty<List<Route>> longuestTrailP1;
-    private static SimpleObjectProperty<List<Route>> longuestTrailP2;
+
+    private static final SimpleObjectProperty<List<Route>> longestTrailP1 = new SimpleObjectProperty<>();
+    private static final SimpleObjectProperty<List<Route>> longestTrailP2 = new SimpleObjectProperty<>();
 
 
     public ObservableGameState(PlayerId ownId){
@@ -59,6 +60,7 @@ public class ObservableGameState {
             cardsNumber.add(new SimpleIntegerProperty(0));
             carsNumber.add(new SimpleIntegerProperty(0));
             points.add(new SimpleIntegerProperty(0));
+
         }
 
         for(Route route : ChMap.routes()){
@@ -79,9 +81,6 @@ public class ObservableGameState {
         for(Station station : ChMap.stations()){
             clickedStations.add(new SimpleBooleanProperty(false));
         }
-
-        longuestTrailP1 = new SimpleObjectProperty<>();
-        longuestTrailP2 = new SimpleObjectProperty<>();
     }
 
     /**
@@ -244,11 +243,11 @@ public class ObservableGameState {
      * @return (ReadOnlyObjectProperty<List<Route>>) : la propriété correspondant au chemin le plus long
      */
     public ReadOnlyObjectProperty<List<Route>> getLonguestTrailP1Property (){
-        return longuestTrailP1;
+        return longestTrailP1;
     }
 
     public ReadOnlyObjectProperty<List<Route>> getLonguestTrailP2Property (){
-        return longuestTrailP2;
+        return longestTrailP2;
     }
 
     /**
@@ -257,8 +256,8 @@ public class ObservableGameState {
      * @param longestP2 (List<Route>)
      */
     public static void setLonguestTrail(List<Route> longestP1, List<Route> longestP2){
-        longuestTrailP1.set(longestP1);
-        longuestTrailP2.set(longestP2);
+        longestTrailP1.set(longestP1);
+        longestTrailP2.set(longestP2);
     }
 
     /**
