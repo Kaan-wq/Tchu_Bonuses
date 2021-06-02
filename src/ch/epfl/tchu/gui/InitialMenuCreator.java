@@ -1,7 +1,6 @@
 package ch.epfl.tchu.gui;
 
 import javafx.application.Platform;
-import javafx.event.Event;
 import javafx.geometry.Pos;
 
 import javafx.scene.Scene;
@@ -19,7 +18,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.net.ConnectException;
 
 public class InitialMenuCreator {
 
