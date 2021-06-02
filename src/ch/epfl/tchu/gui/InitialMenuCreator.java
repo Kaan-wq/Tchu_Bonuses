@@ -19,6 +19,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.net.ConnectException;
+
 public class InitialMenuCreator {
 
     public static void menuCreator(Stage parent, String id){
@@ -38,14 +40,24 @@ public class InitialMenuCreator {
         else{
             textFlow = new TextFlow(new Text("Veuillez introduire les liens de connexion"));
         }
-        TextField playerName;
-        TextField playerName2;
-        if(id.equals("serveur")){
-             playerName = new TextField("Nom du premier joueur");
-             playerName2 = new TextField("Nom du deuxième joueur");
-        }else{
-            playerName = new TextField("Nom du port / localhost");
-            playerName2 = new TextField("Numéro du port / 5108");
+
+
+        TextField playerName; //premier textfield
+        TextField playerName2; //deuxième textfield
+        if(id.equals("serveur")){                               //initialisation des textfield du serveur
+             playerName = new TextField();
+             playerName.setPromptText("Nom du premier joueur");
+             playerName.setFocusTraversable(false);
+             playerName2 = new TextField();
+             playerName2.setPromptText("Nom du deuxième joueur");
+             playerName2.setFocusTraversable(false);
+        }else{                                                 //initialisation des textfield du client
+            playerName = new TextField("localhost");
+            playerName.setPromptText("Nom du port");
+            playerName.setFocusTraversable(false);
+            playerName2 = new TextField("5108");
+            playerName2.setPromptText("Numéro du port");
+            playerName2.setFocusTraversable(false);
         }
 
 
@@ -63,18 +75,19 @@ public class InitialMenuCreator {
         sc.getStylesheets().add("menu.css");
 
         button.setOnAction(event -> {
+            Platform.setImplicitExit(false);
+            menu.hide();
 
             if(id.equals("serveur")){
                 ServerMain.startedGame(playerName.getText(), playerName2.getText());
             }else{
                 ClientMain.startGameClient(playerName.getText(), playerName2.getText());
             }
-            Platform.setImplicitExit(false);
-            menu.hide();
+
 
         });
 
-        regles.setOnAction(event -> {
+        regles.setOnAction(event -> {                           //affichage des règles dans le menu
             Stage popUp = new Stage(StageStyle.UTILITY);
             popUp.initOwner(menu);
             popUp.initModality(Modality.NONE);

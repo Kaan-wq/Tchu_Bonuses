@@ -36,32 +36,14 @@ public final class ServerMain extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
-        listParametres = getParameters().getRaw();
-
         InitialMenuCreator.menuCreator(primaryStage, "serveur");
-        /*if(listParametres.isEmpty()){ listParametres = List.of("Kaan","Félix"); }
-
-        try{
-            ServerSocket serverSocket = new ServerSocket(5108);
-            Socket socket = serverSocket.accept();
-            Player clientPlayer = new GraphicalPlayerAdapter();
-            Player remotePlayerProxy = new RemotePlayerProxy(socket);
-
-            var playerNames = new EnumMap(PlayerId.class);
-            playerNames.put(PLAYER_1, listParametres.get(0));
-            playerNames.put(PLAYER_2, listParametres.get(1));
-
-            var playersMap = new EnumMap(PlayerId.class);
-            playersMap.put(PLAYER_1, remotePlayerProxy);
-            playersMap.put(PLAYER_2, clientPlayer);
-
-            new Thread(() -> Game.play(playersMap, playerNames, SortedBag.of(ChMap.tickets()), new Random())).start();
-
-        }catch(Exception e){ throw new Error(); }*/
-
-
     }
 
+    /**
+     *
+     * @param argFirst nom du premier joueur de la partie
+     * @param argSecnd nom du deuxième joueur de la partie
+     */
     public static void startedGame(String argFirst, String argSecnd){
         try{
             ServerSocket serverSocket = new ServerSocket(5108);
