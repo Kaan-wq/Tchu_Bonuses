@@ -24,7 +24,6 @@ import static ch.epfl.tchu.game.PlayerId.PLAYER_2;
  */
 
 public final class ServerMain extends Application {
-    private List<String> listParametres;
 
     public static void main(String[] args) {
         launch(args);
@@ -53,8 +52,8 @@ public final class ServerMain extends Application {
             Player remotePlayerProxy = new RemotePlayerProxy(socket);
 
             var playerNames = new EnumMap(PlayerId.class);
-            playerNames.put(PLAYER_1, argFirst);
-            playerNames.put(PLAYER_2, argSecnd);
+            playerNames.put(PLAYER_1, argSecnd);
+            playerNames.put(PLAYER_2, argFirst);
 
             var playersMap = new EnumMap(PlayerId.class);
             playersMap.put(PLAYER_1, remotePlayerProxy);
